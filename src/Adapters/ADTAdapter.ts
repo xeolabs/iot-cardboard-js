@@ -28,7 +28,8 @@ import {
     ADTPatch,
     IADTTwinComponent,
     KeyValuePairData,
-    DTwinUpdateEvent
+    DTwinUpdateEvent,
+    IDTDLInterface
 } from '../Models/Constants';
 import ADTTwinData from '../Models/Classes/AdapterDataClasses/ADTTwinData';
 import ADTModelData from '../Models/Classes/AdapterDataClasses/ADTModelData';
@@ -39,7 +40,6 @@ import {
 } from '../Models/Classes/AdapterDataClasses/ADTAdapterData';
 import ADTTwinLookupData from '../Models/Classes/AdapterDataClasses/ADTTwinLookupData';
 import axios, { AxiosError, AxiosInstance } from 'axios';
-import { DtdlInterface } from '../Models/Constants/dtdlInterfaces';
 import { getModelContentType } from '../Models/Services/Utils';
 import { DTDLType } from '../Models/Classes/DTDL';
 import ExpandedADTModelData from '../Models/Classes/AdapterDataClasses/ExpandedADTModelData';
@@ -560,7 +560,7 @@ export default class ADTAdapter implements IADTAdapter {
         const adapterMethodSandbox = new AdapterMethodSandbox(this.authService);
 
         return await adapterMethodSandbox.safelyFetchData(async (token) => {
-            const expandedModels: DtdlInterface[] = [];
+            const expandedModels: IDTDLInterface[] = [];
 
             const fetchFullModel = async (targetModelId: string) => {
                 return axios({

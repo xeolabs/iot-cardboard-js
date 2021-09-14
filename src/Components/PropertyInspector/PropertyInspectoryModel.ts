@@ -4,12 +4,13 @@ import {
     dtdlPrimitiveTypesList
 } from '../../Models/Constants/Constants';
 import {
-    DtdlInterface,
-    DtdlInterfaceContent,
-    DtdlProperty,
-    DtdlRelationship
-} from '../../Models/Constants/dtdlInterfaces';
-import { DTwin, IADTRelationship } from '../../Models/Constants/Interfaces';
+    DTwin,
+    IADTRelationship,
+    IDTDLInterface,
+    IDTDLInterfaceContent,
+    IDTDLProperty,
+    IDTDLRelationship
+} from '../../Models/Constants/Interfaces';
 import { NodeRole, PropertyTreeNode } from './PropertyTree/PropertyTree.types';
 import { compare, Operation } from 'fast-json-patch';
 import {
@@ -24,15 +25,15 @@ import {
  *  - Various utitilies to do with PropertyInspector model
  */
 class PropertyInspectorModel {
-    expandedModels: DtdlInterface[];
+    expandedModels: IDTDLInterface[];
 
-    constructor(expandedModels?: DtdlInterface[]) {
+    constructor(expandedModels?: IDTDLInterface[]) {
         this.expandedModels = expandedModels;
     }
 
     /** Looks up property on Twin | Relationship or returns default value if unset */
     getPropertyValueOrDefault = (
-        property: DtdlInterfaceContent,
+        property: IDTDLInterfaceContent,
         propertySourceObject: Record<string, any>,
         schema: dtdlPropertyTypesEnum
     ) => {
@@ -84,7 +85,7 @@ class PropertyInspectorModel {
         path,
         propertySourceObject
     }: {
-        modelProperty: DtdlProperty;
+        modelProperty: IDTDLProperty;
         propertySourceObject: Record<string, any>;
         path: string;
         isObjectChild: boolean;
@@ -217,7 +218,7 @@ class PropertyInspectorModel {
     /** Merges relationship data returned by ADT API with the DTDL relationship model. */
     parseRelationshipIntoPropertyTree = (
         relationship: IADTRelationship,
-        relationshipDefinition: DtdlRelationship
+        relationshipDefinition: IDTDLRelationship
     ): PropertyTreeNode[] => {
         const treeNodes: PropertyTreeNode[] = [];
 
@@ -270,7 +271,7 @@ class PropertyInspectorModel {
         isInherited,
         twin
     }: {
-        contents: DtdlInterfaceContent[];
+        contents: IDTDLInterfaceContent[];
         twin: DTwin;
         path: string;
         isInherited: boolean;
@@ -352,7 +353,7 @@ class PropertyInspectorModel {
         twin
     }: {
         twin: DTwin;
-        rootModel: DtdlInterface;
+        rootModel: IDTDLInterface;
         path: string;
         isInherited: boolean;
     }): PropertyTreeNode[] => {

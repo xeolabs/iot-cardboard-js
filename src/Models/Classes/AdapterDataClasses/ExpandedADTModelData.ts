@@ -1,9 +1,8 @@
-import { DtdlInterface } from '../../Constants/dtdlInterfaces';
-import { IAdapterData } from '../../Constants/Interfaces';
+import { IAdapterData, IDTDLInterface } from '../../Constants/Interfaces';
 
 interface IExpandedADTModelData {
-    rootModel: DtdlInterface;
-    expandedModels: DtdlInterface[];
+    rootModel: IDTDLInterface;
+    expandedModels: IDTDLInterface[];
 }
 
 class ExpandedADTModelData implements IAdapterData {

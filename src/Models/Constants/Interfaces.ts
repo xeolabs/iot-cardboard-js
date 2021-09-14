@@ -195,25 +195,72 @@ export interface IHierarchyNode {
     isLoading?: boolean;
 }
 
+export interface IDTDLInterface {
+    '@id': string;
+    '@type': string;
+    '@context': string | string[];
+    comment?: string;
+    contents?: IDTDLInterfaceContent[];
+    description?: string;
+    displayName?: string;
+    extends?: string | string[];
+    schemas?: IDTDLInterfaceSchema[];
+}
+
+export interface IDTDLInterfaceSchema {
+    '@id': string;
+    '@type': 'Array' | 'String' | 'Map' | 'Object';
+    comment?: string;
+    description?: string;
+    displayName?: string;
+    [schemaProperty: string]: any;
+}
+
+export interface IDTDLRelationship {
+    '@type': 'Relationship';
+    name: string;
+    '@id'?: string;
+    comment?: string;
+    description?: string;
+    displayName?: string;
+    maxMultiplicity?: number;
+    minMultiplicity?: number;
+    properties?: IDTDLProperty[];
+    target?: string;
+    writable?: boolean;
+}
+
+export interface IDTDLInterfaceContent {
+    '@type': string | string[];
+    name: string;
+    comment?: string;
+    description?: string;
+    displayName?: string;
+    writable?: boolean;
+    schema?: string | Record<string, any>;
+    [propertyName: string]: any;
+}
+
+export interface IDTDLProperty {
+    '@type': 'Property' | string[];
+    name: string;
+    schema?: string | Record<string, any>;
+    '@id'?: string;
+    comment?: string;
+    description?: string;
+    displayName?: string;
+    unit?: string;
+    writable?: boolean;
+}
+
 export interface IADTModel {
     id: string;
     description: any;
     displayName: Record<string, string>;
     decommissioned: boolean;
     uploadTime: string;
-    model?: IADTModelDefinition;
+    model?: IDTDLInterface;
 }
-
-export interface IADTModelDefinition {
-    '@type': string;
-    '@context': string;
-    '@id': string;
-    displayName: string;
-    description: string;
-    comment: string;
-    contents: any[];
-}
-
 export interface IADTTwin {
     $dtId: string;
     $etag: string;

@@ -3,12 +3,12 @@ import {
     DTwin,
     DTwinRelationship,
     IADTAdapter,
+    IADTModel,
     IKeyValuePairAdapter,
     ITsiClientChartDataAdapter
 } from '.';
 import AdapterResult from '../Classes/AdapterResult';
 import {
-    IADTModel,
     IADTTwin,
     IAdapterData,
     IHierarchyNode,
@@ -77,6 +77,11 @@ export type ADTTwinsApiData = {
     continuationToken: string;
 };
 
+export type ADTRelationshipsApiData = {
+    value: IADTRelationship[];
+    nextLink: string;
+};
+
 export type CancellablePromise<T> = {
     /** Wrapped promise - throws CancelledPromiseError if cancelled */
     promise: Promise<T>;
@@ -117,11 +122,6 @@ export type AdapterMethodParamsForGetADTTwinsByModelId = {
 export type AdapterMethodParamsForSearchADTTwins = {
     searchTerm: string;
     continuationToken?: string;
-};
-
-export type ADTRelationshipsApiData = {
-    value: IADTRelationship[];
-    nextLink: string;
 };
 
 export type AssetsFromBIMState = {

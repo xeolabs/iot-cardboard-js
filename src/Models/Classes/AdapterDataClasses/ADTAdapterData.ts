@@ -1,6 +1,5 @@
-import { IAdapterData } from '../../Constants/Interfaces';
+import { IAdapterData, IDTDLInterface } from '../../Constants/Interfaces';
 import { ADTModelsApiData, ADTTwinsApiData } from '../../Constants/Types';
-import { DtdlInterface } from '../../Constants/dtdlInterfaces';
 
 export class ADTAdapterModelsData implements IAdapterData {
     data: ADTModelsApiData;
@@ -35,8 +34,8 @@ export class ADTAdapterTwinsData implements IAdapterData {
 }
 
 interface IADTAdapterExpandedModelData {
-    rootModel: DtdlInterface;
-    expandedModels: DtdlInterface[];
+    rootModel: IDTDLInterface;
+    expandedModels: IDTDLInterface[];
 }
 
 export class ADTAdapterExpandedModelData implements IAdapterData {

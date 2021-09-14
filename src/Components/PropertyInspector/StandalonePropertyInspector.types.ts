@@ -2,12 +2,10 @@ import {
     DTwin,
     ADTPatch,
     IADTRelationship,
-    PropertyInspectorPatchMode
+    PropertyInspectorPatchMode,
+    IDTDLInterface,
+    IDTDLRelationship
 } from '../..';
-import {
-    DtdlInterface,
-    DtdlRelationship
-} from '../../Models/Constants/dtdlInterfaces';
 
 export interface OnCommitPatchParams {
     patchMode: PropertyInspectorPatchMode;
@@ -24,13 +22,13 @@ export interface StandalonePropertyInspectorProps {
 
 export type TwinParams = {
     twin: DTwin;
-    expandedModels: DtdlInterface[];
-    rootModel: DtdlInterface;
+    expandedModels: IDTDLInterface[];
+    rootModel: IDTDLInterface;
 };
 
 export type RelationshipParams = {
     relationship: IADTRelationship;
-    relationshipDefinition: DtdlRelationship;
+    relationshipDefinition: IDTDLRelationship;
 };
 
 export const isTwin = (

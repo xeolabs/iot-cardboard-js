@@ -4,9 +4,9 @@ import {
     ADTModel_ViewData_PropertyName,
     ADTModel_ImgPropertyPositions_PropertyName,
     ADTModel_ImgSrc_PropertyName,
-    ADTModel_InBIM_RelationshipName
+    ADTModel_InBIM_RelationshipName,
+    IDTDLProperty
 } from '../Constants';
-import { DtdlProperty } from '../Constants/dtdlInterfaces';
 
 export const createGUID = () => {
     const s4 = () => {
@@ -133,7 +133,7 @@ export const getModelContentType = (type: string | string[]) => {
 
 export const getModelContentUnit = (
     type: string | string[],
-    property: DtdlProperty
+    property: IDTDLProperty
 ) => {
     return Array.isArray(type) && type[1] ? property?.unit : null;
 };
