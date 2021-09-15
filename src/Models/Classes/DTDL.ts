@@ -1,4 +1,4 @@
-import { IADTModelDefinition, IADTProperty } from '../Constants';
+import { IADTModelDefinition, IDTDLProperty } from '../Constants';
 
 export const CURRENT_CONTEXT_VERSION = 'dtmi:dtdl:context;2';
 
@@ -516,7 +516,7 @@ export class DTDLProperty {
         return new DTDLProperty('', '', 'double', '', '', '', '', false);
     }
 
-    static fromObject(obj: IADTProperty): DTDLProperty {
+    static fromObject(obj: IDTDLProperty): DTDLProperty {
         return new DTDLProperty(
             obj['@id'],
             obj.name,

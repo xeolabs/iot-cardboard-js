@@ -14,7 +14,7 @@ import JsonUploader from '../../Components/JsonUploader/JsonUploader';
 import { MessageBar, MessageBarType, PrimaryButton } from '@fluentui/react';
 import useAdapter from '../../Models/Hooks/useAdapter';
 import { DTDLModel } from '../../Models/Classes/DTDL';
-import { DTModel } from '../../Models/Constants/Interfaces';
+import { IDTDLInterface } from '../../Models/Constants/Interfaces';
 import { ADTModelsData } from '../../Models/Classes/AdapterDataClasses/ADTUploadData';
 import AdapterResult from '../../Models/Classes/AdapterResult';
 import { UploadPhase } from '../../Models/Constants';
@@ -93,7 +93,7 @@ function ADTModelUploaderCard(props: ADTModelUploaderCardProps, ref) {
         setProgressMessage(null);
         const jsonItems = (jsonUploaderComponentRef.current as any)?.getJsonItems();
         if (jsonItems.length) {
-            const models: Array<DTModel> = jsonItems.map((item) => {
+            const models: Array<IDTDLInterface> = jsonItems.map((item) => {
                 const model = DTDLModel.fromObject(item);
                 return model.trimmedCopy();
             });

@@ -2,9 +2,9 @@ import { ADTAdapter } from '../../Adapters';
 import {
     ICardBaseProps,
     IAdtPusherSimulation,
-    DTModel,
-    DTwin,
-    DTwinRelationship
+    IDTDLInterface,
+    IADTTwin,
+    IADTTwinRelationshipAsset
 } from '../../Models/Constants';
 
 export interface IDataPusherProps extends ICardBaseProps {
@@ -35,9 +35,9 @@ export interface IDataPusherState {
     isEnvironmentReady: boolean;
     disablePastEvents: boolean;
     isOtherOptionsVisible: boolean;
-    models: readonly DTModel[];
-    twins: readonly DTwin[];
-    relationships: readonly DTwinRelationship[];
+    models: IDTDLInterface[];
+    twins: readonly IADTTwin[];
+    relationships: readonly IADTTwinRelationshipAsset[];
     areAssetsSet: boolean;
     simulationStatus: {
         areAssetsUploaded: boolean;

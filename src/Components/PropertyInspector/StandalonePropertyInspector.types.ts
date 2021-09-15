@@ -1,5 +1,5 @@
 import {
-    DTwin,
+    IADTTwin,
     ADTPatch,
     IADTRelationship,
     PropertyInspectorPatchMode,
@@ -21,7 +21,7 @@ export interface StandalonePropertyInspectorProps {
 }
 
 export type TwinParams = {
-    twin: DTwin;
+    twin: IADTTwin;
     expandedModels: IDTDLInterface[];
     rootModel: IDTDLInterface;
 };

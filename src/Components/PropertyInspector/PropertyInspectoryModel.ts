@@ -4,7 +4,7 @@ import {
     dtdlPrimitiveTypesList
 } from '../../Models/Constants/Constants';
 import {
-    DTwin,
+    IADTTwin,
     IADTRelationship,
     IDTDLInterface,
     IDTDLInterfaceContent,
@@ -272,7 +272,7 @@ class PropertyInspectorModel {
         twin
     }: {
         contents: IDTDLInterfaceContent[];
-        twin: DTwin;
+        twin: IADTTwin;
         path: string;
         isInherited: boolean;
     }): PropertyTreeNode[] => {
@@ -352,7 +352,7 @@ class PropertyInspectorModel {
         rootModel,
         twin
     }: {
-        twin: DTwin;
+        twin: IADTTwin;
         rootModel: IDTDLInterface;
         path: string;
         isInherited: boolean;

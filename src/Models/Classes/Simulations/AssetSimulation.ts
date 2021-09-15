@@ -1,10 +1,10 @@
 import {
     ADTModel_ImgSrc_PropertyName,
     ADTModel_ImgPropertyPositions_PropertyName,
-    DTModelContent,
-    DTModel,
-    DTwin,
-    DTwinRelationship,
+    IDTDLInterfaceContent,
+    IDTDLInterface,
+    IADTTwin,
+    IADTTwinRelationshipAsset,
     IAdtPusherSimulation,
     ADTModel_ViewData_PropertyName,
     BoardInfoPropertyName
@@ -80,7 +80,7 @@ export default class AssetSimulation implements IAdtPusherSimulation {
     generateDTModels(isImagesIncluded = true, download = false) {
         this.isADTModelImagesIncluded = isImagesIncluded;
         const dtdlModels = this.assets.map((asset) => {
-            const propertyContents: Array<DTModelContent> = asset.devices.map(
+            const propertyContents: Array<IDTDLInterfaceContent> = asset.devices.map(
                 (device) => ({
                     '@type': 'Property',
                     name: device.deviceName,
@@ -132,7 +132,7 @@ export default class AssetSimulation implements IAdtPusherSimulation {
                 }
             );
 
-            const model: DTModel = {
+            const model: IDTDLInterface = {
                 '@id': this.generateModelId(asset.name),
                 '@type': 'Interface',
                 '@context': 'dtmi:dtdl:context;2',
@@ -149,10 +149,10 @@ export default class AssetSimulation implements IAdtPusherSimulation {
 
     generateDTwins(isImagesIncluded = true, download = false) {
         this.isADTModelImagesIncluded = isImagesIncluded;
-        const twins: Array<DTwin> = [];
+        const twins: Array<IADTTwin> = [];
         this.assets.forEach((asset: Asset) => {
             asset.twins.forEach((assetTwin: AssetTwin) => {
-                const twin: DTwin = {
+                const twin: IADTTwin = {
                     $dtId: assetTwin.name,
                     $metadata: {
                         $model: `dtmi:assetGen:${asset.name};${modelTwinsRelationshipsData.versionNumber}`
@@ -187,7 +187,7 @@ export default class AssetSimulation implements IAdtPusherSimulation {
     }
 
     generateTwinRelationships() {
-        const relationships: Array<DTwinRelationship> = [];
+        const relationships: Array<IADTTwinRelationshipAsset> = [];
         this.assets.forEach((asset: Asset) => {
             asset?.twins.forEach((twin: AssetTwin) => {
                 twin.assetRelationships?.forEach(

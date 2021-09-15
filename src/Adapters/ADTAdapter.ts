@@ -1,8 +1,13 @@
 import {
+    ADTPatch,
+    DTwinUpdateEvent,
     IADTAdapter,
     IADTRelationship,
     IADTTwin,
+    IADTTwinComponent,
+    IADTTwinRelationshipAsset,
     IAuthService,
+    IDTDLInterface,
     IGetKeyValuePairsAdditionalParameters
 } from '../Models/Constants/Interfaces';
 import axiosRetry from 'axios-retry';
@@ -11,7 +16,8 @@ import {
     AdapterMethodParamsForGetADTTwinsByModelId,
     AdapterMethodParamsForSearchADTTwins,
     ADTRelationship,
-    ADTRelationshipsApiData
+    ADTRelationshipsApiData,
+    KeyValuePairData
 } from '../Models/Constants/Types';
 import { KeyValuePairAdapterData } from '../Models/Classes';
 import AdapterMethodSandbox from '../Models/Classes/AdapterMethodSandbox';
@@ -19,18 +25,6 @@ import {
     ADTRelationshipData,
     ADTRelationshipsData
 } from '../Models/Classes/AdapterDataClasses/ADTRelationshipsData';
-import {
-    ADT_ApiVersion,
-    CardErrorType,
-    DTwin,
-    DTwinRelationship,
-    DTModel,
-    ADTPatch,
-    IADTTwinComponent,
-    KeyValuePairData,
-    DTwinUpdateEvent,
-    IDTDLInterface
-} from '../Models/Constants';
 import ADTTwinData from '../Models/Classes/AdapterDataClasses/ADTTwinData';
 import ADTModelData from '../Models/Classes/AdapterDataClasses/ADTModelData';
 import {
@@ -48,6 +42,8 @@ import {
     ADTTwinsData
 } from '../Models/Classes/AdapterDataClasses/ADTUploadData';
 import { SimulationAdapterData } from '../Models/Classes/AdapterDataClasses/SimulationAdapterData';
+import { ADT_ApiVersion } from '../Models/Constants/Constants';
+import { CardErrorType } from '../Models/Constants/Enums';
 
 export default class ADTAdapter implements IADTAdapter {
     private authService: IAuthService;
@@ -205,7 +201,7 @@ export default class ADTAdapter implements IADTAdapter {
         );
     }
 
-    createADTModels(models: DTModel[]) {
+    createADTModels(models: IDTDLInterface[]) {
         const adapterMethodSandbox = new AdapterMethodSandbox(this.authService);
 
         return adapterMethodSandbox.safelyFetchDataCancellableAxiosPromise(
@@ -296,7 +292,7 @@ export default class ADTAdapter implements IADTAdapter {
         );
     }
 
-    async createModels(models: DTModel[]) {
+    async createModels(models: IDTDLInterface[]) {
         const adapterMethodSandbox = new AdapterMethodSandbox(this.authService);
         return await adapterMethodSandbox.safelyFetchData(async (token) => {
             const axiosResult = await this.axiosInstance({
@@ -327,7 +323,7 @@ export default class ADTAdapter implements IADTAdapter {
         });
     }
 
-    async createTwins(twins: DTwin[], onUploadProgress?) {
+    async createTwins(twins: IADTTwin[], onUploadProgress?) {
         const adapterMethodSandbox = new AdapterMethodSandbox(this.authService);
         return await adapterMethodSandbox.safelyFetchData(async (token) => {
             let uploadCounter = 0;
@@ -372,49 +368,54 @@ export default class ADTAdapter implements IADTAdapter {
     }
 
     async createRelationships(
-        relationships: DTwinRelationship[],
+        relationships: IADTTwinRelationshipAsset[],
         onUploadProgress?
     ) {
         const adapterMethodSandbox = new AdapterMethodSandbox(this.authService);
         return await adapterMethodSandbox.safelyFetchData(async (token) => {
             let uploadCounter = 0;
             const data = await Promise.all(
-                relationships.map(async (relationship: DTwinRelationship) => {
-                    const payload = {
-                        $targetId: relationship.$targetId,
-                        $relationshipName: relationship.$name
-                    };
-                    const axiosResponse = await this.axiosInstance({
-                        method: 'put',
-                        url: `/digitaltwins/${encodeURIComponent(
-                            relationship.$dtId
-                        )}/relationships/${encodeURIComponent(
-                            relationship.$relId
-                        )}`,
-                        data: payload,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            authorization: 'Bearer ' + token,
-                            'x-adt-host': this.adtHostUrl
-                        },
-                        params: {
-                            'api-version': ADT_ApiVersion
-                        }
-                    }).catch((err) => {
-                        adapterMethodSandbox.pushError({
-                            type: CardErrorType.DataUploadFailed,
-                            isCatastrophic: false,
-                            rawError: err
+                relationships.map(
+                    async (relationship: IADTTwinRelationshipAsset) => {
+                        const payload = {
+                            $targetId: relationship.$targetId,
+                            $relationshipName: relationship.$name
+                        };
+                        const axiosResponse = await this.axiosInstance({
+                            method: 'put',
+                            url: `/digitaltwins/${encodeURIComponent(
+                                relationship.$dtId
+                            )}/relationships/${encodeURIComponent(
+                                relationship.$relId
+                            )}`,
+                            data: payload,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                authorization: 'Bearer ' + token,
+                                'x-adt-host': this.adtHostUrl
+                            },
+                            params: {
+                                'api-version': ADT_ApiVersion
+                            }
+                        }).catch((err) => {
+                            adapterMethodSandbox.pushError({
+                                type: CardErrorType.DataUploadFailed,
+                                isCatastrophic: false,
+                                rawError: err
+                            });
+                            return null;
                         });
-                        return null;
-                    });
 
-                    uploadCounter++;
-                    onUploadProgress &&
-                        onUploadProgress(uploadCounter, relationships.length);
+                        uploadCounter++;
+                        onUploadProgress &&
+                            onUploadProgress(
+                                uploadCounter,
+                                relationships.length
+                            );
 
-                    return axiosResponse ? axiosResponse.data : null;
-                })
+                        return axiosResponse ? axiosResponse.data : null;
+                    }
+                )
             );
 
             //filter out nulls, i.e. errors

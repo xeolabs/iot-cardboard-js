@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-    DTwin,
-    DTwinRelationship,
-    DTModel,
+    IADTTwin,
+    IADTTwinRelationshipAsset,
+    IDTDLInterface,
     UploadPhase,
     IGenerateADTAssetsProps
 } from '../../Models/Constants';
@@ -23,7 +23,8 @@ const GenerateADTAssets: React.FC<IGenerateADTAssetsProps> = ({
     const { t } = useTranslation();
 
     const pushModelsState = useAdapter({
-        adapterMethod: (models: Array<DTModel>) => adapter.createModels(models),
+        adapterMethod: (models: Array<IDTDLInterface>) =>
+            adapter.createModels(models),
         refetchDependencies: [],
         isAdapterCalledOnMount: false
     });
@@ -62,7 +63,7 @@ const GenerateADTAssets: React.FC<IGenerateADTAssetsProps> = ({
     };
 
     const pushTwinsState = useAdapter({
-        adapterMethod: (twins: Array<DTwin>) =>
+        adapterMethod: (twins: Array<IADTTwin>) =>
             adapter.createTwins(twins, updateTwinsUploadProgress),
         refetchDependencies: [],
         isAdapterCalledOnMount: false
@@ -83,7 +84,7 @@ const GenerateADTAssets: React.FC<IGenerateADTAssetsProps> = ({
     };
 
     const pushRelationshipsState = useAdapter({
-        adapterMethod: (relationships: Array<DTwinRelationship>) =>
+        adapterMethod: (relationships: Array<IADTTwinRelationshipAsset>) =>
             adapter.createRelationships(
                 relationships,
                 updateRelationshipsUploadStatus

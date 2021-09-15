@@ -10,9 +10,9 @@ import {
     ADTModel_MetadataFilePath_PropertyName,
     ADTModel_ViewData_PropertyName,
     AssetsFromBIMState,
-    DTModel,
-    DTwin,
-    DTwinRelationship
+    IDTDLInterface,
+    IADTTwin,
+    IADTTwinRelationshipAsset
 } from '../Constants';
 
 const useAssetsFromBIM = (
@@ -39,7 +39,7 @@ const useAssetsFromBIM = (
         onIsLoadingChange(false);
     };
 
-    const transformModels = (typesDictionary): DTModel[] => {
+    const transformModels = (typesDictionary): IDTDLInterface[] => {
         return Object.keys(typesDictionary).map((modelName) => {
             const properties = typesDictionary[modelName].properties
                 ? typesDictionary[modelName].properties
@@ -98,7 +98,7 @@ const useAssetsFromBIM = (
             };
 
             const bimModelID = createDTDLModelId(ADTModel_BIMContainerId);
-            const twinsDictionary: Record<string, DTwin> = {};
+            const twinsDictionary: Record<string, IADTTwin> = {};
             twinsDictionary[ADTModel_BIMContainerId] = {
                 $dtId: ADTModel_BIMContainerId,
                 $metadata: {
@@ -108,7 +108,7 @@ const useAssetsFromBIM = (
             };
             const relationshipsDictionary: Record<
                 string,
-                DTwinRelationship
+                IADTTwinRelationshipAsset
             > = {};
 
             // recursive traversal of every asset to extract model, twin and  information

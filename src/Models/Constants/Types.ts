@@ -1,12 +1,3 @@
-import {
-    DTModel,
-    DTwin,
-    DTwinRelationship,
-    IADTAdapter,
-    IADTModel,
-    IKeyValuePairAdapter,
-    ITsiClientChartDataAdapter
-} from '.';
 import AdapterResult from '../Classes/AdapterResult';
 import {
     IADTTwin,
@@ -14,7 +5,13 @@ import {
     IHierarchyNode,
     IErrorInfo,
     ICancellablePromise,
-    IADTRelationship
+    IADTRelationship,
+    IADTModel,
+    IDTDLInterface,
+    IADTTwinRelationshipAsset,
+    IKeyValuePairAdapter,
+    ITsiClientChartDataAdapter,
+    IADTAdapter
 } from './Interfaces';
 
 export type AdapterReturnType<T extends IAdapterData> =
@@ -125,9 +122,9 @@ export type AdapterMethodParamsForSearchADTTwins = {
 };
 
 export type AssetsFromBIMState = {
-    models: Array<DTModel>;
-    twins: Array<DTwin>;
-    relationships: Array<DTwinRelationship>;
+    models: Array<IDTDLInterface>;
+    twins: Array<IADTTwin>;
+    relationships: Array<IADTTwinRelationshipAsset>;
     modelCounts: Record<string, number>;
 };
 

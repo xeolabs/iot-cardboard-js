@@ -44,49 +44,6 @@ export interface IAction {
     payload?: any;
 }
 
-export interface IBIMViewerProps {
-    bimFilePath: string;
-    metadataFilePath: string;
-    centeredObject?: string;
-}
-
-export interface ITSIChartComponentProps {
-    data: any[];
-    chartOptions?: any;
-    chartDataOptions?: any[];
-}
-
-export interface ICardBaseProps {
-    title?: string;
-    theme?: Theme;
-    locale?: Locale;
-    localeStrings?: Record<string, any>;
-    adapterAdditionalParameters?: Record<string, any>;
-}
-export interface IStandaloneConsumeCardProps extends ICardBaseProps {
-    adapter: any;
-}
-
-export interface IConsumeCardProps extends ICardBaseProps {
-    adapter: any;
-    id: string;
-    properties: readonly string[];
-}
-
-export interface IErrorComponentProps {
-    errorTitle: string;
-    errorContent?: string;
-}
-
-export interface IOverlayProps {
-    children: React.ReactNode;
-    onClose?: () => void;
-}
-
-export interface IConsumeCompositeCardProps extends ICardBaseProps {
-    adapter?: any;
-}
-
 export interface IAuthService {
     login: () => void;
     getToken: () => Promise<string>;
@@ -147,54 +104,12 @@ export interface ICardError {
     messageParams?: { [key: string]: string };
 }
 
-export interface IMockAdapter {
-    /** If unset, random data is generated, if explicitly set, MockAdapter will use value for mocked data.
-     *  To mock empty data, explicitly set { mockData: null }
-     */
-    mockData?: any;
-
-    /** Mocked network timeout period, defaults to 0ms */
-    networkTimeoutMillis?: number;
-
-    /** If set, MockAdapter will mock error of set type */
-    mockError?: CardErrorType;
-
-    /** Toggles seeding of random data (data remains constants between builds), defaults to true */
-    isDataStatic?: boolean;
-}
-
 export interface IErrorInfo {
     errors: ICardError[];
     catastrophicError: ICardError;
 }
 
-export interface IHierarchyProps {
-    data: Record<string, IHierarchyNode>;
-    searchTermToMark?: string;
-    isLoading?: boolean;
-    onParentNodeClick?: (node: IHierarchyNode) => void;
-    onChildNodeClick?: (
-        parentNode: IHierarchyNode,
-        childNode: IHierarchyNode
-    ) => void;
-    noDataText?: string;
-    shouldScrollToSelectedNode?: boolean;
-}
-
-export interface IHierarchyNode {
-    name: string;
-    id: string;
-    parentNode?: IHierarchyNode;
-    nodeData: any; // original object from adapter result data
-    nodeType: HierarchyNodeType;
-    children?: Record<string, IHierarchyNode>;
-    childrenContinuationToken?: string | null;
-    onNodeClick?: (node?: IHierarchyNode) => void;
-    isCollapsed?: boolean;
-    isSelected?: boolean;
-    isLoading?: boolean;
-}
-
+// Beginning of DTDL based interfaces
 export interface IDTDLInterface {
     '@id': string;
     '@type': string;
@@ -216,6 +131,23 @@ export interface IDTDLInterfaceSchema {
     [schemaProperty: string]: any;
 }
 
+export interface IDTDLInterfaceContent {
+    '@type':
+        | 'Property'
+        | 'Relationship'
+        | 'Telemetry'
+        | 'Command'
+        | 'Component'
+        | string[];
+    name: string;
+    comment?: string;
+    description?: string;
+    displayName?: string;
+    writable?: boolean;
+    schema?: string | Record<string, any>;
+    [propertyName: string]: any;
+}
+
 export interface IDTDLRelationship {
     '@type': 'Relationship';
     name: string;
@@ -230,17 +162,6 @@ export interface IDTDLRelationship {
     writable?: boolean;
 }
 
-export interface IDTDLInterfaceContent {
-    '@type': string | string[];
-    name: string;
-    comment?: string;
-    description?: string;
-    displayName?: string;
-    writable?: boolean;
-    schema?: string | Record<string, any>;
-    [propertyName: string]: any;
-}
-
 export interface IDTDLProperty {
     '@type': 'Property' | string[];
     name: string;
@@ -252,7 +173,9 @@ export interface IDTDLProperty {
     unit?: string;
     writable?: boolean;
 }
+// End of DTDL based interfaces
 
+// Beginning of ADT API response related interfaces
 export interface IADTModel {
     id: string;
     description: any;
@@ -263,15 +186,9 @@ export interface IADTModel {
 }
 export interface IADTTwin {
     $dtId: string;
-    $etag: string;
     $metadata: {
         $model: string;
         [propertyName: string]: any;
-    };
-    cb_viewdata?: {
-        boardInfo?: string;
-        bimFilePath?: string;
-        bimMetadataFilePath?: string;
     };
     [propertyName: string]: any;
 }
@@ -286,18 +203,6 @@ export interface IADTRelationship {
     [property: string]: any;
 }
 
-export interface IADTProperty {
-    ['@type']: 'Property';
-    name: string;
-    schema: string | Record<string, any>;
-    ['@id']?: string;
-    comment?: string;
-    description?: string;
-    displayName?: string;
-    unit?: string;
-    writable?: boolean;
-}
-
 export interface IADTTwinComponent {
     $metadata: {
         [propertyName: string]: {
@@ -306,6 +211,7 @@ export interface IADTTwinComponent {
     };
     [propertyName: string]: any; // this can be another component
 }
+// End of ADT API response related interfaces
 
 export interface IGetKeyValuePairsAdditionalParameters
     extends Record<string, any> {
@@ -330,19 +236,25 @@ export interface IEntityInfo {
     [key: string]: any;
 }
 
-export interface ISearchboxProps {
-    className?: string;
-    placeholder: string;
-    onChange?: (
-        event?: React.ChangeEvent<HTMLInputElement>,
-        newValue?: string
-    ) => void;
-    onSearch?: (value: string) => void;
-    onClear?: () => void;
-}
-
 export interface ICancellablePromise<T> extends Promise<T> {
     cancel: () => void;
+}
+
+// Beginning of interfaces for adapters
+export interface IMockAdapter {
+    /** If unset, random data is generated, if explicitly set, MockAdapter will use value for mocked data.
+     *  To mock empty data, explicitly set { mockData: null }
+     */
+    mockData?: any;
+
+    /** Mocked network timeout period, defaults to 0ms */
+    networkTimeoutMillis?: number;
+
+    /** If set, MockAdapter will mock error of set type */
+    mockError?: CardErrorType;
+
+    /** Toggles seeding of random data (data remains constants between builds), defaults to true */
+    isDataStatic?: boolean;
 }
 
 export interface IKeyValuePairAdapter {
@@ -380,12 +292,14 @@ export interface IADTAdapter extends IKeyValuePairAdapter {
         twinId: string,
         relationshipId: string
     ): AdapterReturnType<ADTRelationshipData>;
-    createADTModels(models: DTModel[]): AdapterReturnType<ADTAdapterModelsData>;
+    createADTModels(
+        models: IDTDLInterface[]
+    ): AdapterReturnType<ADTAdapterModelsData>;
     deleteADTModel(id: string): AdapterReturnType<ADTModelData>;
-    createModels(models: DTModel[]): any;
-    createTwins(twins: DTwin[], onUploadProgress?): any;
+    createModels(models: IDTDLInterface[]): any;
+    createTwins(twins: IADTTwin[], onUploadProgress?): any;
     createRelationships(
-        relationships: DTwinRelationship[],
+        relationships: IADTTwinRelationshipAsset[],
         onUploadProgress?
     ): any;
     getExpandedAdtModel(
@@ -412,17 +326,19 @@ export interface IBaseStandardModelSearchAdapter {
     ): AdapterReturnType<StandardModelData>;
 }
 
-export interface IModelSearchStringParams {
-    queryString: string;
-    pageIdx?: number;
-    modelIndex: Record<string, any>;
-}
 export interface IStandardModelSearchAdapter
     extends IBaseStandardModelSearchAdapter {
     githubRepo?: string;
     searchString(
         params: IModelSearchStringParams
     ): AdapterReturnType<StandardModelSearchData>;
+}
+// End of interfaces for adapters
+
+export interface IModelSearchStringParams {
+    queryString: string;
+    pageIdx?: number;
+    modelIndex: Record<string, any>;
 }
 
 export interface IStandardModelSearchItem {
@@ -480,39 +396,8 @@ export interface AssetTwin {
     assetRelationships?: Array<AssetRelationship>;
 }
 
-export interface DTModelContent {
-    '@type':
-        | 'Property'
-        | 'Relationship'
-        | 'Telemetry'
-        | 'Command'
-        | 'Component'
-        | readonly [string, string];
-    name: string;
-    schema: string | Record<string, any>;
-    [propertyName: string]: any;
-}
-
-export interface DTModel {
-    '@id': string;
-    '@type': string | readonly [string, string];
-    '@context': string | readonly [string];
-    displayName?: string;
-    contents?: readonly DTModelContent[];
-    description?: string;
-    comment?: string;
-}
-
-export interface DTwin {
-    $dtId: string;
-    $metadata: {
-        $model: string;
-        [propertyName: string]: any;
-    };
-    [propertyName: string]: any;
-}
-
-export interface DTwinRelationship {
+// used as an intermediary interface for relationship asset for data pusher
+export interface IADTTwinRelationshipAsset {
     $relId: string;
     $dtId: string;
     $targetId: string;
@@ -526,19 +411,90 @@ export interface IAdtPusherSimulation {
     generateDTModels(
         isImagesIncluded?: boolean,
         download?: boolean
-    ): Array<DTModel>;
+    ): Array<IDTDLInterface>;
     generateDTwins(
         isImagesIncluded?: boolean,
         download?: boolean
-    ): Array<DTwin>;
-    generateTwinRelationships(): Array<DTwinRelationship>;
+    ): Array<IADTTwin>;
+    generateTwinRelationships(): Array<IADTTwinRelationshipAsset>;
+}
+
+// Beginning of interfaces for component props
+export interface IBIMViewerProps {
+    bimFilePath: string;
+    metadataFilePath: string;
+    centeredObject?: string;
+}
+
+export interface ITSIChartComponentProps {
+    data: any[];
+    chartOptions?: any;
+    chartDataOptions?: any[];
+}
+
+export interface ICardBaseProps {
+    title?: string;
+    theme?: Theme;
+    locale?: Locale;
+    localeStrings?: Record<string, any>;
+    adapterAdditionalParameters?: Record<string, any>;
+}
+export interface IStandaloneConsumeCardProps extends ICardBaseProps {
+    adapter: any;
+}
+
+export interface IConsumeCardProps extends ICardBaseProps {
+    adapter: any;
+    id: string;
+    properties: readonly string[];
+}
+
+export interface IErrorComponentProps {
+    errorTitle: string;
+    errorContent?: string;
+}
+
+export interface IOverlayProps {
+    children: React.ReactNode;
+    onClose?: () => void;
+}
+
+export interface IConsumeCompositeCardProps extends ICardBaseProps {
+    adapter?: any;
+}
+
+export interface IHierarchyProps {
+    data: Record<string, IHierarchyNode>;
+    searchTermToMark?: string;
+    isLoading?: boolean;
+    onParentNodeClick?: (node: IHierarchyNode) => void;
+    onChildNodeClick?: (
+        parentNode: IHierarchyNode,
+        childNode: IHierarchyNode
+    ) => void;
+    noDataText?: string;
+    shouldScrollToSelectedNode?: boolean;
+}
+
+export interface IHierarchyNode {
+    name: string;
+    id: string;
+    parentNode?: IHierarchyNode;
+    nodeData: any; // original object from adapter result data
+    nodeType: HierarchyNodeType;
+    children?: Record<string, IHierarchyNode>;
+    childrenContinuationToken?: string | null;
+    onNodeClick?: (node?: IHierarchyNode) => void;
+    isCollapsed?: boolean;
+    isSelected?: boolean;
+    isLoading?: boolean;
 }
 
 export interface IGenerateADTAssetsProps {
     adapter: IADTAdapter;
-    models: readonly DTModel[];
-    twins: readonly DTwin[];
-    relationships: readonly DTwinRelationship[];
+    models: readonly IDTDLInterface[];
+    twins: readonly IADTTwin[];
+    relationships: readonly IADTTwinRelationshipAsset[];
     triggerUpload: boolean;
     onComplete(models, twins, relationships): void;
 }
@@ -551,3 +507,15 @@ export interface IStepperWizardProps {
     steps: Array<IStepperWizardStep>;
     currentStepIndex?: number;
 }
+
+export interface ISearchboxProps {
+    className?: string;
+    placeholder: string;
+    onChange?: (
+        event?: React.ChangeEvent<HTMLInputElement>,
+        newValue?: string
+    ) => void;
+    onSearch?: (value: string) => void;
+    onClear?: () => void;
+}
+// End of interfaces for component props

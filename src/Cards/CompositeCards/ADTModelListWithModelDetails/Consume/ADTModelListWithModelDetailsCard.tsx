@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-    DTModel,
+    IDTDLInterface,
     IADTModel,
     IHierarchyNode
 } from '../../../../Models/Constants/Interfaces';
@@ -58,7 +58,7 @@ const ADTModelListWithModelDetailsCard: React.FC<ADTModelListWithModelDetailsCar
 
     const handleCreateModelClick = async (model: DTDLModel) => {
         const resolvedModels: AdapterResult<ADTAdapterModelsData> = await adapter.createADTModels(
-            [model.trimmedCopy() as DTModel]
+            [model.trimmedCopy() as IDTDLInterface]
         );
         if (resolvedModels.getCatastrophicError()?.rawError) {
             setErrorMessage(
@@ -70,7 +70,7 @@ const ADTModelListWithModelDetailsCard: React.FC<ADTModelListWithModelDetailsCar
             if (resolvedModel) {
                 (modelListComponentRef.current as any)?.addNewModel({
                     ...resolvedModel,
-                    model: model as DTModel
+                    model: model as IDTDLInterface
                 });
                 setSelectedModel(model);
             }
