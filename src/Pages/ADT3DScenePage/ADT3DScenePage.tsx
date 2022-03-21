@@ -58,6 +58,20 @@ const ADT3DScenePage: React.FC<IADT3DScenePageProps> = ({
     );
     const { t } = useTranslation();
 
+    const userRolesForContainer = useAdapter({
+        adapterMethod: adapter.getUserRolesByResourceId(),
+        refetchDependencies: [adapter, state.selectedBlobContainerURL]
+    });
+
+    useEffect(
+        (userRoles) => {
+            if (!userRoles.find('theGuidForReader')) {
+                dispatch({ NO_WRITE_ACCESS });
+            }
+        },
+        [userRolesForContainer.adapterResult.result]
+    );
+
     const scenesConfig = useAdapter({
         adapterMethod: () => adapter.getScenesConfig(),
         refetchDependencies: [
@@ -229,7 +243,7 @@ const ADT3DScenePage: React.FC<IADT3DScenePageProps> = ({
                         </>
                     )}
 
-                    <ScenePageErrorHandlingWrapper errors={state.errors}>
+                    <ScenePageErrorHandlingWrapper error={state.handledError}>
                         {state.currentStep ===
                             ADT3DScenePageSteps.SceneLobby && (
                             <div className="cb-scene-page-scene-list-container">
