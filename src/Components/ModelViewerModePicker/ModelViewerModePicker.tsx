@@ -55,7 +55,11 @@ const ModelViewerModePicker: React.FC<ModelViewerModePickerProps> = ({
             imageAlt: t('modelViewerModePicker.default'),
             selectedImageSrc: DefaultStyle,
             imageSize: { width: 40, height: 40 },
-            text: t('modelViewerModePicker.default')
+            text: t('modelViewerModePicker.default'),
+            styles: {
+                input: { width: 100 },
+                innerField: { justifyContent: 'center' }
+            }
         },
         {
             key: 'transparent',
@@ -63,7 +67,11 @@ const ModelViewerModePicker: React.FC<ModelViewerModePickerProps> = ({
             imageAlt: t('modelViewerModePicker.transparent'),
             selectedImageSrc: TransparentStyle,
             imageSize: { width: 40, height: 40 },
-            text: t('modelViewerModePicker.transparent')
+            text: t('modelViewerModePicker.transparent'),
+            styles: {
+                input: { width: 100 },
+                innerField: { justifyContent: 'center' }
+            }
         },
         {
             key: 'wireframe',
@@ -71,7 +79,11 @@ const ModelViewerModePicker: React.FC<ModelViewerModePickerProps> = ({
             imageAlt: t('modelViewerModePicker.wireframe'),
             selectedImageSrc: WireframeStyle,
             imageSize: { width: 40, height: 40 },
-            text: t('modelViewerModePicker.wireframe')
+            text: t('modelViewerModePicker.wireframe'),
+            styles: {
+                input: { width: 100 },
+                innerField: { justifyContent: 'center' }
+            }
         }
     ];
 
