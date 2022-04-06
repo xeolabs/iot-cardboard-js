@@ -1092,11 +1092,53 @@ const SceneView: React.FC<ISceneViewProp> = ({
             }
             try {
                 for (const coloredMesh of coloredMeshItems) {
-                    if (coloredMesh.meshId) {
-                        const mesh: BABYLON.AbstractMesh =
-                            meshMap.current?.[coloredMesh.meshId];
-                        colorMesh(mesh, coloredMesh.color);
+                    const mesh = scene.meshes.find(
+                        (m) => m.id === coloredMesh.meshId
+                    );
+
+                    if (mesh) {
+                        //Create dynamic texture
+                        const textureResolution = 512;
+                        const textureGround = new BABYLON.DynamicTexture(
+                            'dynamic texture',
+                            textureResolution,
+                            scene,
+                            false
+                        );
+                        const textureContext = textureGround.getContext();
+
+                        const materialGround = new BABYLON.StandardMaterial(
+                            'Mat',
+                            scene
+                        );
+                        materialGround.diffuseTexture = textureGround;
+                        mesh.material = materialGround;
+
+                        //Draw on canvas
+                        const strips = textureContext.createLinearGradient(
+                            0,
+                            0,
+                            1000,
+                            0
+                        );
+                        let i = 0;
+                        while (i < 1) {
+                            strips.addColorStop(i, 'red');
+                            strips.addColorStop(i + 0.1, 'red');
+                            strips.addColorStop(i + 0.1, 'blue');
+                            strips.addColorStop(i + 0.2, 'blue');
+                            i += 0.2;
+                        }
+                        textureContext.fillStyle = strips;
+                        textureContext.fillRect(0, 0, 1000, 1000);
+                        textureGround.update();
                     }
+
+                    // if (coloredMesh.meshId) {
+                    //     const mesh: BABYLON.AbstractMesh =
+                    //         meshMap.current?.[coloredMesh.meshId];
+                    //     colorMesh(mesh, coloredMesh.color);
+                    // }
                 }
             } catch {
                 console.warn('unable to color mesh');
