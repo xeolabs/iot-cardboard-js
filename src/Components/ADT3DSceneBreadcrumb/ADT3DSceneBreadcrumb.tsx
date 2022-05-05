@@ -103,9 +103,6 @@ const ADT3DSceneBreadcrumb: React.FC<Props> = ({
 
         let activePanelBreadcrumb: Array<IBreadcrumbItem> = [];
 
-        // eslint-disable-next-line no-debugger
-        debugger;
-
         if (
             !(
                 builderMode === ADT3DSceneBuilderMode.ElementsIdle ||

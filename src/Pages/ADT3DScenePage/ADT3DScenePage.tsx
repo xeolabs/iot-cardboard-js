@@ -82,6 +82,10 @@ const ADT3DScenePage: React.FC<IADT3DScenePageProps> = ({
             type: SET_CURRENT_STEP,
             payload: ADT3DScenePageSteps.SceneLobby
         });
+        dispatch({
+            type: SET_ADT_SCENE_PAGE_MODE,
+            payload: ADT3DScenePageModes.BuildScene
+        });
     };
 
     const handleOnSceneClick = (scene: IScene) => {
