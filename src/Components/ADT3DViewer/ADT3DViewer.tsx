@@ -39,6 +39,8 @@ import LayerDropdown, {
     unlayeredBehaviorKey
 } from '../LayerDropdown/LayerDropdown';
 import { WrapperMode } from '../3DV/SceneView.types';
+import { ADT3DSceneBuilderMode } from '../../Models/Constants';
+import ADT3DSceneBreadcrumb from '../ADT3DSceneBreadcrumb/ADT3DSceneBreadcrumb';
 
 const ADT3DViewer: React.FC<IADT3DViewerProps & BaseComponentProps> = ({
     theme,
@@ -357,6 +359,17 @@ const ADT3DViewer: React.FC<IADT3DViewerProps & BaseComponentProps> = ({
                             : t('elementsPanel.hidePanel')
                     }
                     onClick={toggleIsElementsPanelVisible}
+                />
+                <ADT3DSceneBreadcrumb
+                    builderMode={ADT3DSceneBuilderMode.ElementsIdle}
+                    onBehaviorsRootClick={() => {
+                        return;
+                    }}
+                    onElementsRootClick={() => {
+                        return;
+                    }}
+                    sceneId={sceneId}
+                    config={scenesConfig}
                 />
                 {isElementsPanelVisible && (
                     <ViewerElementsPanel

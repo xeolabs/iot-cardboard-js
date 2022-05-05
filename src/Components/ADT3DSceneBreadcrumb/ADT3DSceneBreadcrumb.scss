@@ -1,0 +1,33 @@
+.cb-left-panel-builder-breadcrumb-container {
+    height: 36px;
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.cb-left-panel-builder-breadcrumb-home-icon-container {
+    align-items: center;
+    background-color: unset;
+    border: unset;
+    cursor: pointer;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    margin-right: 2px;
+    width: 32px;
+}
+.cb-left-panel-builder-breadcrumb-home-icon {
+    color: var(--cb-color-text-primary);
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.cb-left-panel-builder-breadcrumb {
+    left: 0;
+    position: relative;
+    transform: scale(1);
+    transform-origin: left;
+    transition: transform 0.15s ease;
+    &.cb-left-panel-builder-breadcrumb-scene-root {
+        transform: scale(1.2);
+    }
+}
