@@ -1,0 +1,178 @@
+{
+  "$schema": "https://github.com/microsoft/iot-cardboard-js/tree/main/schemas/3DScenesConfiguration/v1.0.0/3DScenesConfiguration.schema.json",
+  "configuration": {
+    "scenes": [
+      {
+        "id": "51b4e1a7f851b51925d26e0251dbb447",
+        "displayName": "Redmond Site",
+        "assets": [
+          {
+            "type": "3DAsset",
+            "url": "https://matdartest.blob.core.windows.net/sameronandydemo/OutdoorTanks.gltf"
+          }
+        ],
+        "elements": [
+          {
+            "type": "TwinToObjectMapping",
+            "id": "9e091a2e887a83df4bd018f98c0e68ae",
+            "displayName": "PasteurizationMachine_A01",
+            "linkedTwinID": "PasteurizationMachine_A01",
+            "objectIDs": [
+              "tank3_LOD0.012_primitive2"
+            ]
+          },
+          {
+            "type": "TwinToObjectMapping",
+            "id": "5ad2ce975ad03e70dabe320d5b305fc0",
+            "displayName": "PasteurizationMachine_A02",
+            "linkedTwinID": "PasteurizationMachine_A02",
+            "objectIDs": [
+              "tank3_LOD0.003_primitive2"
+            ]
+          },
+          {
+            "type": "TwinToObjectMapping",
+            "id": "6e74ebf4f8a974efdc99f0fe7a83755b",
+            "displayName": "Matts Fav PM",
+            "linkedTwinID": "PasteurizationMachine_A03",
+            "objectIDs": [
+              "tank4_LOD0.006_primitive2"
+            ]
+          },
+          {
+            "type": "TwinToObjectMapping",
+            "id": "8df674b9a3769d56e7321181480cccef",
+            "displayName": "PasteurizationMachine_A04",
+            "linkedTwinID": "PasteurizationMachine_A04",
+            "objectIDs": [
+              "tank6_LOD0.003_primitive1"
+            ]
+          }
+        ],
+        "behaviorIDs": [
+          ""
+        ]
+      }
+    ],
+    "behaviors": [
+      {
+        "id": "",
+        "displayName": "Machine Temp",
+        "datasources": [
+          {
+            "type": "ElementTwinToObjectMappingDataSource",
+            "elementIDs": [
+              "6e74ebf4f8a974efdc99f0fe7a83755b",
+              "9e091a2e887a83df4bd018f98c0e68ae",
+              "5ad2ce975ad03e70dabe320d5b305fc0",
+              "8df674b9a3769d56e7321181480cccef"
+            ]
+          }
+        ],
+        "visuals": [
+          {
+            "type": "StatusColoring",
+            "statusValueExpression": "LinkedTwin.Temperature",
+            "valueRanges": [
+              {
+                "color": "#33A1FD",
+                "min": 0,
+                "max": 12,
+                "id": "2648928dd56aa4b17a0eecc2366f7c8d"
+              },
+              {
+                "color": "#26C485",
+                "min": 12,
+                "max": 100,
+                "id": "c37a58e3bebd266ee8feba70311de598"
+              },
+              {
+                "color": "#C32F27",
+                "min": 100,
+                "max": "Infinity",
+                "id": "08143d2eac05ee126351d49bc3098bc4"
+              }
+            ],
+            "objectIDs": {
+              "expression": "objectIDs"
+            }
+          },
+          {
+            "type": "Popover",
+            "title": "",
+            "widgets": [
+              {
+                "id": "",
+                "type": "Gauge",
+                "valueExpression": "LinkedTwin.InFlow",
+                "widgetConfiguration": {
+                  "label": "InFlow",
+                  "valueRanges": [
+                    {
+                      "color": "#33A1FD",
+                      "min": "-Infinity",
+                      "max": 0,
+                      "id": "d6d4265aa5db8907aaf4ac4eb5c69cc9"
+                    },
+                    {
+                      "color": "#C32F27",
+                      "min": 0,
+                      "max": "Infinity",
+                      "id": "56d61e81e0c5736a1ea655ba44f7b384"
+                    }
+                  ],
+                  "units": "m/s"
+                }
+              },
+              {
+                "id": "",
+                "type": "Gauge",
+                "valueExpression": "LinkedTwin.OutFlow",
+                "widgetConfiguration": {
+                  "label": "OutFlow",
+                  "valueRanges": [
+                    {
+                      "color": "#33A1FD",
+                      "min": "-Infinity",
+                      "max": 0,
+                      "id": "8f10e43388975ae6432f6f22356de43b"
+                    },
+                    {
+                      "color": "#C32F27",
+                      "min": 0,
+                      "max": "Infinity",
+                      "id": "1e7e8c94c9a1771a8bfda1e1ebe66952"
+                    }
+                  ],
+                  "units": "m/s"
+                }
+              },
+              {
+                "id": "",
+                "type": "Link",
+                "widgetConfiguration": {
+                  "label": "PBI",
+                  "linkExpression": "https://pbi.com/${LinkedTwin.$dtId}"
+                }
+              }
+            ],
+            "objectIDs": {
+              "expression": "meshIDs"
+            }
+          },
+          {
+            "type": "Alert",
+            "color": "#C32F27",
+            "iconName": "ShieldAlert",
+            "labelExpression": "${LinkedTwin.InFlow}",
+            "triggerExpression": "LinkedTwin.InFlow > LinkedTwin.OutFlow and LinkedTwin.PercentFull > 90 and LinkedTwin.Temperature > 100",
+            "objectIDs": {
+              "expression": "objectIDs"
+            }
+          }
+        ]
+      }
+    ],
+    "layers": []
+  }
+}
