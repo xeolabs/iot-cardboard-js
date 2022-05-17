@@ -749,6 +749,13 @@
         "transparent": "Transparent",
         "wireframe": "Wireframe"
     },
+    "globeStylePicker": {
+        "buttonLabel": "Theme",
+        "title": "Globe Theme",
+        "blue": "Blue",
+        "grey": "Grey",
+        "yellow": "Yellow"
+    },
     "deeplinkFlyout": {
         "buttonTitle": "Share",
         "copyButtonText": "Copy link",

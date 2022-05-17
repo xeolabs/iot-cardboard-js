@@ -2,7 +2,8 @@ import MockAdapter from '../../Adapters/MockAdapter';
 import ADT3DSceneAdapter from '../../Adapters/ADT3DSceneAdapter';
 import {
     ADT3DScenePageModes,
-    ADT3DScenePageSteps
+    ADT3DScenePageSteps,
+    GlobeTheme
 } from '../../Models/Constants/Enums';
 import {
     IComponentError,
@@ -66,6 +67,7 @@ export interface ADT3DScenePageState {
     scene?: IScene;
     errors?: Array<IComponentError>;
     errorCallback: IErrorButtonAction;
+    globeStyle?: GlobeTheme;
 }
 
 export interface IADT3DScenePageContext {

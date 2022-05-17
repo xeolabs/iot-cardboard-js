@@ -9,7 +9,8 @@ import { useTranslation } from 'react-i18next';
 import {
     ADT3DScenePageModes,
     ADT3DScenePageSteps,
-    ComponentErrorType
+    ComponentErrorType,
+    GlobeTheme
 } from '../../Models/Constants/Enums';
 import SceneList from '../../Components/SceneList/SceneList';
 import {
@@ -25,7 +26,8 @@ import {
     SET_ADT_SCENE_CONFIG,
     SET_CURRENT_STEP,
     SET_ERRORS,
-    SET_ERROR_CALLBACK
+    SET_ERROR_CALLBACK,
+    SET_GLOBE_STYLE
 } from '../../Models/Constants/ActionTypes';
 import {
     IADTInstance,
@@ -53,6 +55,8 @@ import { getStyles } from './ADT3DScenePage.styles';
 import { Stack } from '@fluentui/react';
 import DeeplinkFlyout from '../../Components/DeeplinkFlyout/DeeplinkFlyout';
 import ViewerConfigUtility from '../../Models/Classes/ViewerConfigUtility';
+import GlobeStylePicker from '../../Components/GlobeStylePicker/GlobeStylePicker';
+import { GlobeStyleKey } from '../../Models/Constants';
 
 export const ADT3DScenePageContext = createContext<IADT3DScenePageContext>(
     null
@@ -182,6 +186,15 @@ const ADT3DScenePageBase: React.FC<IADT3DScenePageProps> = ({
         [deeplinkDispatch, environmentPickerOptions?.environment]
     );
 
+    useEffect(() => {
+        const globeStyle = localStorage.getItem(GlobeStyleKey);
+        if (globeStyle) {
+            setGlobeStyle(JSON.parse(globeStyle));
+        } else {
+            setGlobeStyle(GlobeTheme.Blue);
+        }
+    }, []);
+
     // update the adapter if the ADT instance changes
     useEffect(() => {
         adapter.setAdtHostUrl(deeplinkState.adtUrl);
@@ -213,6 +226,13 @@ const ADT3DScenePageBase: React.FC<IADT3DScenePageProps> = ({
         },
         [setSelectedSceneId, setCurrentStep]
     );
+
+    const setGlobeStyle = useCallback((globeStyle: GlobeTheme) => {
+        dispatch({
+            type: SET_GLOBE_STYLE,
+            payload: globeStyle
+        });
+    }, []);
 
     // store the scene config when the fetch resolves
     useEffect(() => {
@@ -284,6 +304,15 @@ const ADT3DScenePageBase: React.FC<IADT3DScenePageProps> = ({
             });
         }
     }, [resetConfig, scenesConfig, state?.errors, t]);
+
+    useEffect(() => {
+        if (state.globeStyle) {
+            localStorage.setItem(
+                GlobeStyleKey,
+                JSON.stringify(state.globeStyle)
+            );
+        }
+    }, [state.globeStyle]);
 
     return (
         <ADT3DScenePageContext.Provider
@@ -357,6 +386,12 @@ const ADT3DScenePageBase: React.FC<IADT3DScenePageProps> = ({
                                     />
                                 </div>
                                 <Stack horizontal tokens={{ childrenGap: 8 }}>
+                                    {state.currentStep ===
+                                        ADT3DScenePageSteps.Globe && (
+                                        <GlobeStylePicker
+                                            globeStyleUpdated={setGlobeStyle}
+                                        />
+                                    )}
                                     <DeeplinkFlyout mode="Simple" />
                                     <SceneListModeToggle
                                         selectedMode={state.currentStep}
@@ -394,6 +429,7 @@ const ADT3DScenePageBase: React.FC<IADT3DScenePageProps> = ({
                             <div className="cb-scene-page-scene-globe-container">
                                 <ADT3DGlobe
                                     theme={theme}
+                                    globeTheme={state.globeStyle}
                                     adapter={adapter as IBlobAdapter}
                                     onSceneClick={(scene) => {
                                         handleOnSceneClick(scene);

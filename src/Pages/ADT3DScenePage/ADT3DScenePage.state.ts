@@ -5,7 +5,8 @@ import {
     SET_CURRENT_STEP,
     SET_SELECTED_SCENE,
     SET_ERRORS,
-    SET_ERROR_CALLBACK
+    SET_ERROR_CALLBACK,
+    SET_GLOBE_STYLE
 } from '../../Models/Constants/ActionTypes';
 import { ADT3DScenePageState } from './ADT3DScenePage.types';
 import { ADT3DScenePageSteps } from '../../Models/Constants/Enums';
@@ -41,6 +42,9 @@ export const ADT3DScenePageReducer: (
                 break;
             case SET_ERROR_CALLBACK:
                 draft.errorCallback = payload;
+                break;
+            case SET_GLOBE_STYLE:
+                draft.globeStyle = payload;
                 break;
             default:
                 break;
