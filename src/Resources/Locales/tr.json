@@ -782,5 +782,12 @@
     "reset": "Sıfırlama",
     "zoomIn": "Yakınlaştırma",
     "zoomOut": "Uzaklaştırma"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Tema",
+    "title": "Globe Teması",
+    "blue": "Mavi",
+    "grey": "Gri",
+    "yellow": "Sarı"
   }
 }

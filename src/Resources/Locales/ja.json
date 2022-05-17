@@ -782,5 +782,12 @@
     "reset": "リセット",
     "zoomIn": "ズームインする",
     "zoomOut": "ズームアウト"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "テーマ",
+    "title": "地球儀のテーマ",
+    "blue": "青い",
+    "grey": "灰色",
+    "yellow": "黄色"
   }
 }

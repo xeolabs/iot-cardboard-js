@@ -782,5 +782,12 @@
     "reset": "Resetovat",
     "zoomIn": "Přiblížit",
     "zoomOut": "Oddálit"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Téma",
+    "title": "Téma Globe",
+    "blue": "Modrý",
+    "grey": "Šedý",
+    "yellow": "Žlutý"
   }
 }

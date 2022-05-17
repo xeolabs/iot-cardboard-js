@@ -782,5 +782,12 @@
     "reset": "Сброс",
     "zoomIn": "Увеличить",
     "zoomOut": "Уменьшение масштаба"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Тема",
+    "title": "Тема Глобус",
+    "blue": "Синий",
+    "grey": "Серый",
+    "yellow": "Жёлтый"
   }
 }

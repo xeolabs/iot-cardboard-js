@@ -782,5 +782,12 @@
     "reset": "Resetować",
     "zoomIn": "Powiększanie",
     "zoomOut": "Pomniejszanie"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Kompozycja",
+    "title": "Kompozycja Globe",
+    "blue": "Niebieski",
+    "grey": "Szary",
+    "yellow": "Żółty"
   }
 }

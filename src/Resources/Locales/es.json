@@ -782,5 +782,12 @@
     "reset": "Restablecimiento",
     "zoomIn": "Acercar",
     "zoomOut": "Alejar"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Tema",
+    "title": "Tema Globe",
+    "blue": "Azul",
+    "grey": "Gris",
+    "yellow": "Amarillo"
   }
 }

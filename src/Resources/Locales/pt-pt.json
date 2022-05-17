@@ -782,5 +782,12 @@
     "reset": "Reset",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom para fora"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Tema",
+    "title": "Tema do Globo",
+    "blue": "Azul",
+    "grey": "Cinza",
+    "yellow": "Amarelo"
   }
 }

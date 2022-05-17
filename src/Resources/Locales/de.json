@@ -782,5 +782,12 @@
     "reset": "Zurücksetzen",
     "zoomIn": "Vergrößern",
     "zoomOut": "Verkleinern"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Thema",
+    "title": "Globe-Design",
+    "blue": "Blau",
+    "grey": "Grau",
+    "yellow": "Gelb"
   }
 }

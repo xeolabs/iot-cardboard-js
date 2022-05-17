@@ -782,5 +782,12 @@
     "reset": "Nollställa",
     "zoomIn": "Zooma in",
     "zoomOut": "Zooma ut"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Tema",
+    "title": "Globe tema",
+    "blue": "Blå",
+    "grey": "Grå",
+    "yellow": "Gul"
   }
 }

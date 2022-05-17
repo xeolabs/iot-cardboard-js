@@ -782,5 +782,12 @@
     "reset": "Terugstellen",
     "zoomIn": "Inzoomen",
     "zoomOut": "Uitzoomen"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Thema",
+    "title": "Globe Thema",
+    "blue": "Blauw",
+    "grey": "Grijs",
+    "yellow": "Geel"
   }
 }

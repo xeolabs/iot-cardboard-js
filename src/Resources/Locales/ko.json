@@ -782,5 +782,12 @@
     "reset": "재설정",
     "zoomIn": "확대",
     "zoomOut": "축소"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "주제",
+    "title": "글로브 테마",
+    "blue": "파랑",
+    "grey": "회색",
+    "yellow": "황색"
   }
 }

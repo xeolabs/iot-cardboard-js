@@ -782,5 +782,12 @@
     "reset": "Átszed",
     "zoomIn": "Nagyítás",
     "zoomOut": "Kicsinyítés"
+  },
+  "globeStylePicker": {
+    "buttonLabel": "Téma",
+    "title": "Globe téma",
+    "blue": "Kék",
+    "grey": "Szürke",
+    "yellow": "Sárga"
   }
 }
