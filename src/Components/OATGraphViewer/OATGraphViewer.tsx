@@ -33,7 +33,8 @@ import {
 import { ElementsContext } from './Internal/OATContext';
 import {
     SET_OAT_PROPERTY_EDITOR_MODEL,
-    SET_OAT_ELEMENTS
+    SET_OAT_ELEMENTS,
+    SET_OAT_GRAPH_VIEWER_POSITIONS
 } from '../../Models/Constants/ActionTypes';
 import {
     IAction,
@@ -51,8 +52,9 @@ const idClassBase = 'dtmi:com:example:';
 const contextClassBase = 'dtmi:adt:context;2';
 const versionClassBase = '1';
 type OATGraphProps = {
-    dispatch?: React.Dispatch<React.SetStateAction<IAction>>;
-    state?: IOATEditorState;
+    dispatch: React.Dispatch<React.SetStateAction<IAction>>;
+    state: IOATEditorState;
+    storedElements: any;
 };
 
 const getStoredElements = () => {
@@ -60,11 +62,10 @@ const getStoredElements = () => {
     return editorData && editorData.models ? editorData.models : null;
 };
 
-const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
+const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
     const { t } = useTranslation();
     const theme = useTheme();
     const reactFlowWrapperRef = useRef(null);
-    const storedElements = getStoredElements();
     const [elements, setElements] = useState(
         !storedElements ? [] : storedElements
     );
@@ -502,6 +503,13 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
             }
             return collection;
         }, []);
+        // Set new state position
+        dispatch({
+            type: SET_OAT_GRAPH_VIEWER_POSITIONS,
+            payload: nodePositions
+        });
+        /*** */
+
         const editorData = JSON.parse(localStorage.getItem(OATDataStorageKey));
         const oatEditorData = {
             ...editorData,
@@ -518,6 +526,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
         };
 
         localStorage.setItem(OATDataStorageKey, JSON.stringify(oatEditorData));
+        /*** */
     };
 
     const translatedOutput = useMemo(() => {
@@ -597,6 +606,8 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
 
     useEffect(() => {
         // Sends information to the page with the DTDL json
+
+        /*** */
         const oatEditorData = JSON.parse(
             localStorage.getItem(OATDataStorageKey)
         );
@@ -607,6 +618,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
                 JSON.stringify(oatEditorData)
             );
         }
+        /*** */
         dispatch({
             type: SET_OAT_ELEMENTS,
             payload: { digitalTwinsModels: translatedOutput }

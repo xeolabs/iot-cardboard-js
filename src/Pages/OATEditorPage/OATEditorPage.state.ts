@@ -13,7 +13,9 @@ import {
     SET_OAT_IS_JSON_UPLOADER_OPEN,
     SET_OAT_TEMPLATES,
     SET_OAT_PROJECT_NAME,
-    SET_OAT_PROJECT_NAME_AND_PROPERTY_EDITOR_MODEL
+    SET_OAT_PROJECT_NAME_AND_PROPERTY_EDITOR_MODEL,
+    SET_OAT_GRAPH_VIEWER_ELEMENTS,
+    SET_OAT_GRAPH_VIEWER_POSITIONS
 } from '../../Models/Constants/ActionTypes';
 
 export const defaultOATEditorState: IOATEditorState = {
@@ -27,7 +29,9 @@ export const defaultOATEditorState: IOATEditorState = {
     importModels: [],
     isJsonUploaderOpen: false,
     templates: null,
-    projectName: null
+    projectName: null,
+    graphViewerPositions: null,
+    graphViewerElements: null
 };
 
 export const OATEditorPageReducer = produce(
@@ -71,6 +75,12 @@ export const OATEditorPageReducer = produce(
             case SET_OAT_PROJECT_NAME_AND_PROPERTY_EDITOR_MODEL:
                 state.projectName = payload.projectName;
                 state.model = payload.model;
+                return;
+            case SET_OAT_GRAPH_VIEWER_POSITIONS:
+                state.graphViewerPositions = payload;
+                return;
+            case SET_OAT_GRAPH_VIEWER_ELEMENTS:
+                state.graphViewerElements = payload;
                 return;
         }
     }

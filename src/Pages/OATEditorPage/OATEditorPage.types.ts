@@ -15,4 +15,6 @@ export interface IOATEditorState {
     isJsonUploaderOpen?: boolean;
     templates?: DTDLProperty[];
     projectName?: string;
+    graphViewerElements?: any;
+    graphViewerPositions: any;
 }

@@ -15,12 +15,14 @@ import {
     loadFiles,
     saveFiles
 } from '../../Components/OATHeader/internal/Utils';
+import { OATDataStorageKey } from '../../Models/Constants';
 
 const OATEditorPage = ({ theme }) => {
     const [state, dispatch] = useReducer(
         OATEditorPageReducer,
         defaultOATEditorState
     );
+    const { graphViewerPositions, projectName, graphViewerElements } = state;
     const EditorPageStyles = getEditorPageStyles();
 
     const languages = Object.keys(i18n.options.resources).map((language) => {
@@ -36,6 +38,26 @@ const OATEditorPage = ({ theme }) => {
             payload: !state.isJsonUploaderOpen
         });
     };
+
+    const getStoredElements = () => {
+        const editorData = JSON.parse(localStorage.getItem(OATDataStorageKey));
+        return editorData && editorData.models ? editorData.models : null;
+    };
+
+    useEffect(() => {
+        // Update storage
+        console.log('Updating storage');
+        const editorData = JSON.parse(localStorage.getItem(OATDataStorageKey));
+        const oatEditorData = {
+            ...editorData,
+            models: graphViewerElements,
+            modelPositions: graphViewerPositions,
+            projectName: projectName,
+            projectDescription: 'project description'
+        };
+
+        localStorage.setItem(OATDataStorageKey, JSON.stringify(oatEditorData));
+    }, [graphViewerPositions, projectName, graphViewerElements]);
 
     useEffect(() => {
         //  Set the OATFilesStorageKey to the localStorage
@@ -68,7 +90,11 @@ const OATEditorPage = ({ theme }) => {
                     elements={state.elements.digitalTwinsModels}
                     dispatch={dispatch}
                 />
-                <OATGraphViewer state={state} dispatch={dispatch} />
+                <OATGraphViewer
+                    state={state}
+                    dispatch={dispatch}
+                    storedElements={getStoredElements()}
+                />
                 <OATPropertyEditor
                     theme={theme}
                     state={state}
