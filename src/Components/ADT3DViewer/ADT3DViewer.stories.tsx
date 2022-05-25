@@ -9,7 +9,7 @@ import {
     ITwinToObjectMapping
 } from '../../Models/Types/Generated/3DScenesConfiguration-v1.0.0';
 import { CustomMeshItem } from '../../Models/Classes/SceneView.types';
-import { Checkbox, Dropdown, IDropdownOption } from '@fluentui/react';
+import { Checkbox, ComboBox, Dropdown, IDropdownOption } from '@fluentui/react';
 
 export default {
     title: '3DV/ADT3DViewer',
@@ -308,6 +308,41 @@ export const Mock = (_args, { globals: { theme, locale } }) => {
                 title="3D Viewer (Mock Data)"
                 theme={theme}
                 locale={locale}
+                adapter={new MockAdapter()}
+                scenesConfig={scenesConfig}
+                pollingInterval={10000}
+                sceneId={mockSceneId}
+                connectionLineColor="#000"
+            />
+        </div>
+    );
+};
+
+export const LayerSelect = (_args, { globals: { theme, locale } }) => {
+    const scenesConfig = mockVConfig as I3DScenesConfig;
+    const [selectedLayers, setSelectedLayers] = useState<string[]>([]);
+
+    return (
+        <div style={{ width: '100%', height: '600px' }}>
+            <ComboBox
+                onChange={(_event, option) =>
+                    setSelectedLayers(option.key ? [option.key.toString()] : [])
+                }
+                style={{ width: '200px' }}
+                placeholder="Select layer..."
+                options={[
+                    { key: '8904b620aa83c649888dadc7c8fdf492', text: 'Flow' },
+                    {
+                        key: '9624b620aa83c649888dadc7c8fdf541',
+                        text: 'Temperature'
+                    }
+                ]}
+            />
+            <ADT3DViewer
+                title="3D Viewer (Mock Data)"
+                theme={theme}
+                locale={locale}
+                selectedLayers={selectedLayers}
                 adapter={new MockAdapter()}
                 scenesConfig={scenesConfig}
                 pollingInterval={10000}

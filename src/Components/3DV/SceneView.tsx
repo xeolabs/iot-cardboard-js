@@ -13,6 +13,7 @@ import React, {
 import './SceneView.scss';
 import {
     createGUID,
+    deepCopy,
     getDebugLogger,
     hexToColor4
 } from '../../Models/Services/Utils';
@@ -32,7 +33,8 @@ import {
     AbstractMesh,
     HighlightLayer,
     Tools,
-    UtilityLayerRenderer
+    UtilityLayerRenderer,
+    Vector3
 } from '@babylonjs/core';
 import {
     convertLatLonToVector3,
@@ -203,6 +205,8 @@ function SceneView(props: ISceneViewProps, ref) {
     const pointerActive = useRef(false);
     const lastCameraPositionOnMouseMoveRef = useRef('');
     const initialCameraRadiusRef = useRef(0);
+    const initialCameraTargetRef = useRef<Vector3>(null);
+    const initialCameraPositionRef = useRef<Vector3>(null);
     const zoomedCameraRadiusRef = useRef(0);
     const zoomedMeshesRef = useRef([]);
     const lastCameraPositionRef = useRef('');
@@ -325,8 +329,6 @@ function SceneView(props: ISceneViewProps, ref) {
 
                     // First time in after loading - create the camera
                     if (!cameraRef.current) {
-                        initialCameraRadiusRef.current = radius;
-
                         const camera = new BABYLON.ArcRotateCamera(
                             'camera',
                             0,
@@ -335,6 +337,23 @@ function SceneView(props: ISceneViewProps, ref) {
                             center,
                             sceneRef.current
                         );
+
+                        if (cameraPosition) {
+                            initialCameraRadiusRef.current = deepCopy(
+                                cameraPosition.radius
+                            );
+                            initialCameraTargetRef.current = deepCopy(
+                                cameraPosition.target
+                            );
+                            initialCameraPositionRef.current = deepCopy(
+                                cameraPosition.position
+                            );
+                            console.log('pos', cameraPosition);
+                        } else {
+                            initialCameraRadiusRef.current = radius;
+                            initialCameraTargetRef.current = camera.target;
+                            initialCameraPositionRef.current = camera.position;
+                        }
 
                         camera.attachControl(canvas, false);
                         camera.lowerRadiusLimit = 0;
@@ -360,12 +379,16 @@ function SceneView(props: ISceneViewProps, ref) {
                         });
                     } else {
                         // ensure if zoom to mesh ids are set we return to the original radius
+                        let position;
+                        let target;
                         if (!zoomMeshIds?.length) {
                             radius = initialCameraRadiusRef.current;
+                            position = initialCameraPositionRef.current;
+                            target = initialCameraTargetRef.current;
                         }
                         zoomedCameraRadiusRef.current = radius;
                         // Here if the caller changed zoomToMeshIds - zoom the existing camera
-                        zoomCamera(radius, meshes, 30);
+                        zoomCamera(radius, meshes, 30, target, position);
                     }
                 }
             }
@@ -528,6 +551,8 @@ function SceneView(props: ISceneViewProps, ref) {
                         cameraRef.current.radius - CameraZoomMultiplier,
                         zoomedMeshesRef.current,
                         5,
+                        null,
+                        null,
                         true
                     );
                 } else {
@@ -535,6 +560,8 @@ function SceneView(props: ISceneViewProps, ref) {
                         cameraRef.current.radius + CameraZoomMultiplier,
                         zoomedMeshesRef.current,
                         5,
+                        null,
+                        null,
                         true
                     );
                 }
@@ -547,7 +574,9 @@ function SceneView(props: ISceneViewProps, ref) {
                 zoomCamera(
                     initialCameraRadiusRef.current,
                     sceneRef.current.meshes,
-                    30
+                    30,
+                    initialCameraTargetRef.current,
+                    initialCameraPositionRef.current
                 );
             }
         }
@@ -557,6 +586,8 @@ function SceneView(props: ISceneViewProps, ref) {
         radius: number,
         meshes: AbstractMesh[],
         frames: number,
+        target?: Vector3,
+        position?: Vector3,
         zoomOnly?: boolean
     ) => {
         const positionFrom = cameraRef.current.position;
@@ -564,8 +595,9 @@ function SceneView(props: ISceneViewProps, ref) {
         const radiusFrom = cameraRef.current.radius;
         // Now move it immediately to where we want it and save the new position
         cameraRef.current.zoomOn(meshes, true);
-        const positionTo = cameraRef.current.position;
-        const targetTo = cameraRef.current.target;
+        const positionTo = position ? position : cameraRef.current.position;
+        const targetTo = target ? target : cameraRef.current.target;
+        console.log(target);
         const radiusTo = radius;
         // Reset camera back to original position
         cameraRef.current.position = positionFrom;
