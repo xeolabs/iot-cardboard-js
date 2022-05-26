@@ -28,30 +28,6 @@ const OATPropertyEditor = ({
         currentNestedPropertyIndex,
         setCurrentNestedPropertyIndex
     ] = useState(null);
-    const { templates } = state;
-
-    // Default templates to storage value
-    // Save templates updates to local storage
-    useEffect(() => {
-        const oatEditorData = JSON.parse(
-            localStorage.getItem(OATDataStorageKey)
-        );
-
-        if (!templates && oatEditorData.templates) {
-            dispatch({
-                type: SET_OAT_TEMPLATES,
-                payload: oatEditorData.templates
-            });
-        }
-
-        if (oatEditorData && templates) {
-            oatEditorData.templates = templates;
-            localStorage.setItem(
-                OATDataStorageKey,
-                JSON.stringify(oatEditorData)
-            );
-        }
-    }, [templates]);
 
     return (
         <div>

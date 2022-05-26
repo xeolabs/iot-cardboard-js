@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { OATDataStorageKey } from '../../../Models/Constants';
 import { getHeaderStyles, getPromptTextStyles } from '../OATHeader.styles';
 import { IOATEditorState } from '../../../Pages/OATEditorPage/OATEditorPage.types';
-import { saveFiles } from './Utils';
+import { loadFiles, saveFiles } from './Utils';
 
 interface IModal {
     resetProject?: () => void;

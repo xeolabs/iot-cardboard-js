@@ -22,7 +22,12 @@ const OATEditorPage = ({ theme }) => {
         OATEditorPageReducer,
         defaultOATEditorState
     );
-    const { graphViewerPositions, projectName, graphViewerElements } = state;
+    const {
+        graphViewerPositions,
+        projectName,
+        graphViewerElements,
+        templates
+    } = state;
     const EditorPageStyles = getEditorPageStyles();
 
     const languages = Object.keys(i18n.options.resources).map((language) => {
@@ -39,25 +44,23 @@ const OATEditorPage = ({ theme }) => {
         });
     };
 
-    const getStoredElements = () => {
-        const editorData = JSON.parse(localStorage.getItem(OATDataStorageKey));
-        return editorData && editorData.models ? editorData.models : null;
-    };
-
     useEffect(() => {
-        // Update storage
-        console.log('Updating storage');
+        // Update oat-data storage
+        console.log('*** Updating storage from root ***');
         const editorData = JSON.parse(localStorage.getItem(OATDataStorageKey));
         const oatEditorData = {
             ...editorData,
             models: graphViewerElements,
             modelPositions: graphViewerPositions,
             projectName: projectName,
-            projectDescription: 'project description'
+            projectDescription: 'project description',
+            templates: templates
         };
 
+        console.log('local storage oat-data post update', oatEditorData);
+
         localStorage.setItem(OATDataStorageKey, JSON.stringify(oatEditorData));
-    }, [graphViewerPositions, projectName, graphViewerElements]);
+    }, [graphViewerPositions, projectName, graphViewerElements, templates]);
 
     useEffect(() => {
         //  Set the OATFilesStorageKey to the localStorage
@@ -93,7 +96,7 @@ const OATEditorPage = ({ theme }) => {
                 <OATGraphViewer
                     state={state}
                     dispatch={dispatch}
-                    storedElements={getStoredElements()}
+                    storedElements={state.graphViewerElements}
                 />
                 <OATPropertyEditor
                     theme={theme}

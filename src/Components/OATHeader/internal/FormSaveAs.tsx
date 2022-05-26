@@ -66,7 +66,6 @@ export const FormSaveAs = ({
             data: editorData
         });
         editorData.projectName = projectName;
-        localStorage.setItem(OATDataStorageKey, JSON.stringify(editorData));
         saveFiles(files);
 
         setModalOpen(false);

@@ -13,10 +13,15 @@ import {
     SET_OAT_IS_JSON_UPLOADER_OPEN,
     SET_OAT_TEMPLATES,
     SET_OAT_PROJECT_NAME,
-    SET_OAT_PROJECT_NAME_AND_PROPERTY_EDITOR_MODEL,
     SET_OAT_GRAPH_VIEWER_ELEMENTS,
-    SET_OAT_GRAPH_VIEWER_POSITIONS
+    SET_OAT_GRAPH_VIEWER_POSITIONS,
+    SET_OAT_PROJECT
 } from '../../Models/Constants/ActionTypes';
+import { OATDataStorageKey } from '../../Models/Constants';
+
+const getOATData = () => {
+    return JSON.parse(localStorage.getItem(OATDataStorageKey));
+};
 
 export const defaultOATEditorState: IOATEditorState = {
     model: null,
@@ -28,10 +33,10 @@ export const defaultOATEditorState: IOATEditorState = {
     templatesActive: false,
     importModels: [],
     isJsonUploaderOpen: false,
-    templates: null,
+    templates: getOATData().templates ? getOATData().templates : [],
     projectName: null,
     graphViewerPositions: null,
-    graphViewerElements: null
+    graphViewerElements: getOATData().models ? getOATData().models : []
 };
 
 export const OATEditorPageReducer = produce(
@@ -72,15 +77,17 @@ export const OATEditorPageReducer = produce(
             case SET_OAT_PROJECT_NAME:
                 state.projectName = payload;
                 return;
-            case SET_OAT_PROJECT_NAME_AND_PROPERTY_EDITOR_MODEL:
-                state.projectName = payload.projectName;
-                state.model = payload.model;
-                return;
             case SET_OAT_GRAPH_VIEWER_POSITIONS:
                 state.graphViewerPositions = payload;
                 return;
             case SET_OAT_GRAPH_VIEWER_ELEMENTS:
                 state.graphViewerElements = payload;
+                return;
+            case SET_OAT_PROJECT:
+                state.projectName = payload.projectName;
+                state.model = payload.model;
+                state.graphViewerPositions = payload.positions;
+                state.graphViewerElements = payload.elements;
                 return;
         }
     }

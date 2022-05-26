@@ -18,7 +18,6 @@ import { useTranslation } from 'react-i18next';
 import OATGraphCustomNode from './Internal/OATGraphCustomNode';
 import OATGraphCustomEdge from './Internal/OATGraphCustomEdge';
 import {
-    OATDataStorageKey,
     OATUntargetedRelationshipName,
     OATRelationshipHandleName,
     OATExtendHandleName,
@@ -34,7 +33,9 @@ import { ElementsContext } from './Internal/OATContext';
 import {
     SET_OAT_PROPERTY_EDITOR_MODEL,
     SET_OAT_ELEMENTS,
-    SET_OAT_GRAPH_VIEWER_POSITIONS
+    SET_OAT_GRAPH_VIEWER_POSITIONS,
+    SET_OAT_GRAPH_VIEWER_ELEMENTS,
+    SET_OAT_PROJECT
 } from '../../Models/Constants/ActionTypes';
 import {
     IAction,
@@ -57,18 +58,11 @@ type OATGraphProps = {
     storedElements: any;
 };
 
-const getStoredElements = () => {
-    const editorData = JSON.parse(localStorage.getItem(OATDataStorageKey));
-    return editorData && editorData.models ? editorData.models : null;
-};
-
 const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
     const { t } = useTranslation();
     const theme = useTheme();
     const reactFlowWrapperRef = useRef(null);
-    const [elements, setElements] = useState(
-        !storedElements ? [] : storedElements
-    );
+    const [elements, setElements] = useState(storedElements);
     const defaultPosition = 100;
     const [newModelId, setNewModelId] = useState(0);
     const graphViewerStyles = getGraphViewerStyles();
@@ -82,14 +76,17 @@ const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
         deletedModelId,
         selectedModelId,
         editedModelName,
-        editedModelId,
-        projectName
+        editedModelId
     } = state;
     const [showRelationships, setShowRelationships] = useState(true);
     const [showInheritances, setShowInheritances] = useState(true);
     const [showComponents, setShowComponents] = useState(true);
 
     useEffect(() => {
+        console.log(
+            '*** elements have changed form GRAPH VIEWER EFFECT ***',
+            elements
+        );
         // Identifies which is the next model Id on creating new nodes and updates the Local Storage
         let nextModelId = 0;
         let index = 0;
@@ -106,6 +103,10 @@ const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
         }
         storeElements();
     }, [elements]);
+
+    // useEffect(() => {
+    //     setElements(state.graphViewerElements);
+    // }, [state.graphViewerElements]);
 
     useEffect(() => {
         // Detect changes outside of the component on the selected model
@@ -130,11 +131,6 @@ const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
             currentNodeIdRef.current = newId;
         }
     }, [model]);
-
-    useEffect(() => {
-        // Reload elements on project change
-        setElements(getStoredElements());
-    }, [projectName]);
 
     useEffect(() => {
         // Detects when a Model is deleted outside of the component and Updates the elements state
@@ -493,7 +489,6 @@ const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
     };
 
     const storeElements = () => {
-        // Save the session data into the local storage
         const nodePositions = elements.reduce((collection, element) => {
             if (!element.source) {
                 collection.push({
@@ -503,34 +498,21 @@ const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
             }
             return collection;
         }, []);
-        // Set new state position
+
         dispatch({
-            type: SET_OAT_GRAPH_VIEWER_POSITIONS,
-            payload: nodePositions
+            type: SET_OAT_PROJECT,
+            payload: {
+                projectName: state.projectName,
+                model: state.model,
+                positions: nodePositions,
+                elements: elements
+            }
         });
-        /*** */
-
-        const editorData = JSON.parse(localStorage.getItem(OATDataStorageKey));
-        const oatEditorData = {
-            ...editorData,
-            models: elements,
-            modelPositions: nodePositions,
-            projectName:
-                editorData && editorData.projectName
-                    ? editorData.projectName
-                    : t('OATGraphViewer.project'),
-            projectDescription:
-                editorData && editorData.description
-                    ? editorData && editorData.description
-                    : t('OATGraphViewer.description')
-        };
-
-        localStorage.setItem(OATDataStorageKey, JSON.stringify(oatEditorData));
-        /*** */
     };
 
     const translatedOutput = useMemo(() => {
         // Creates the json object in the DTDL standard based on the content of the nodes
+        console.log(elements);
         const outputObject = elements;
         const nodes = outputObject.reduce((currentNodes, currentNode) => {
             if (currentNode.data.type === OATInterfaceType) {
@@ -605,20 +587,6 @@ const OATGraphViewer = ({ state, dispatch, storedElements }: OATGraphProps) => {
     }, [elements]);
 
     useEffect(() => {
-        // Sends information to the page with the DTDL json
-
-        /*** */
-        const oatEditorData = JSON.parse(
-            localStorage.getItem(OATDataStorageKey)
-        );
-        if (oatEditorData) {
-            oatEditorData.modelTwins = translatedOutput;
-            localStorage.setItem(
-                OATDataStorageKey,
-                JSON.stringify(oatEditorData)
-            );
-        }
-        /*** */
         dispatch({
             type: SET_OAT_ELEMENTS,
             payload: { digitalTwinsModels: translatedOutput }

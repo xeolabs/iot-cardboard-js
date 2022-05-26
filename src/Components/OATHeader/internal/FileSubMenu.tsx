@@ -49,6 +49,15 @@ export const FileSubMenu = ({
             );
             const filesCopy = deepCopy(files);
             filesCopy[fileIndex].data = editorData;
+
+            // const newDataCopy = {
+            //     models: state.graphViewerElements,
+            //     modelPositions: getNodePositionFromElements(state.elements),
+            //     projectName: state.projectName,
+            //     projectDescription: 'project description',
+            //     templates: state.templates
+            // };
+
             setFiles(filesCopy);
             saveFiles(filesCopy);
         } else {

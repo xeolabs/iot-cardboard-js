@@ -10,7 +10,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { IAction } from '../../../Models/Constants/Interfaces';
 import { OATDataStorageKey } from '../../../Models/Constants';
-import { SET_OAT_PROJECT_NAME_AND_PROPERTY_EDITOR_MODEL } from '../../../Models/Constants/ActionTypes';
+import { SET_OAT_PROJECT } from '../../../Models/Constants/ActionTypes';
 import { getHeaderStyles } from '../OATHeader.styles';
 import { loadFiles } from './Utils';
 
@@ -27,20 +27,16 @@ export const FormOpen = ({ dispatch, setModalOpen, setModalBody }: IModal) => {
 
     const handleOpen = () => {
         dispatch({
-            type: SET_OAT_PROJECT_NAME_AND_PROPERTY_EDITOR_MODEL,
+            type: SET_OAT_PROJECT,
             payload: {
                 projectName: selectedFile.text,
-                model: null
+                elements: selectedFile.key.models,
+                positions: selectedFile.key.modelPositions
             }
         });
 
-        localStorage.setItem(
-            OATDataStorageKey,
-            JSON.stringify(selectedFile.key)
-        );
-
-        setModalBody('');
         setModalOpen(false);
+        setModalBody('');
     };
 
     const getFormatFilesToDropDownOptions = () => {
