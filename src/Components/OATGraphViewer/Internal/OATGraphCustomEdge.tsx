@@ -42,6 +42,7 @@ const OATGraphCustomEdge: React.FC<IOATGraphCustomEdgeProps> = ({
     const [nameText, setNameText] = useState(getPropertyDisplayName(data));
     const {
         elements,
+        edges,
         setElements,
         dispatch,
         setCurrentNode,
@@ -325,7 +326,7 @@ const OATGraphCustomEdge: React.FC<IOATGraphCustomEdgeProps> = ({
         let adjustmentTargetX = 0;
         let adjustmentTargetY = 0;
 
-        const element = elements.find((x) => x.id === id);
+        const element = edges.find((x) => x.id === id);
         let polygons = {};
         if (element) {
             polygons = { element: element };
@@ -341,7 +342,7 @@ const OATGraphCustomEdge: React.FC<IOATGraphCustomEdgeProps> = ({
             // Getting vectors to adjust angle from source to target
             let heightVector = targetY > sourceY ? 1 : -1;
             let baseVector = targetX > sourceX ? 1 : -1;
-            const paralels = elements.filter(
+            const paralels = edges.filter(
                 (x) =>
                     x.source === element.source && x.target === element.target
             );
@@ -498,7 +499,7 @@ const OATGraphCustomEdge: React.FC<IOATGraphCustomEdgeProps> = ({
     const onNameBlur = () => {
         setNameEditor(false);
         if (typeof data.name === 'string' && data.name !== nameText) {
-            elements.find(
+            edges.find(
                 (element) => element.data.id === data.id
             ).data.name = nameText;
             setElements([...elements]);

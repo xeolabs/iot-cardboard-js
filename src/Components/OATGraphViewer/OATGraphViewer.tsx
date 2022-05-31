@@ -12,7 +12,6 @@ import ReactFlow, {
     MiniMap,
     Controls,
     Background,
-    removeElements,
     isNode
 } from 'react-flow-renderer';
 import { useTranslation } from 'react-i18next';
@@ -72,6 +71,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
     const [elements, setElements] = useState(
         !storedElements ? [] : storedElements
     );
+    const [edges, setEdges] = useState([]);
     const [newModelId, setNewModelId] = useState(0);
     const graphViewerStyles = getGraphViewerStyles();
     const buttonStyles = getGraphViewerButtonStyles();
@@ -185,7 +185,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
 
     useEffect(() => {
         // Reload elements on project change
-        setElements(getStoredElements());
+        //setElements(getStoredElements());
     }, [project]);
 
     useEffect(() => {
@@ -367,6 +367,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
     const providerVal = useMemo(
         () => ({
             elements,
+            edges,
             setElements,
             setCurrentNode,
             dispatch,
@@ -377,6 +378,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
         }),
         [
             elements,
+            edges,
             setElements,
             setCurrentNode,
             dispatch,
@@ -397,7 +399,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
         setElements((els) => removeElements(elementsToRemove, els));
     };
 
-    const onLoad = useCallback((_reactFlowInstance) => {
+    const onInit = useCallback((_reactFlowInstance) => {
         _reactFlowInstance.fitView();
         _reactFlowInstance.zoomOut();
         _reactFlowInstance.zoomOut();
@@ -411,7 +413,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
         const newNode = {
             id: id,
             type: OATInterfaceType,
-            position: positionLookUp(),
+            position: { x: 100, y: 100 },
             data: {
                 name: name,
                 type: OATInterfaceType,
@@ -420,8 +422,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
                 context: contextClassBase
             }
         };
-        const layoutedElements = getLayoutedElements([...elements, newNode]);
-        setElements(layoutedElements);
+        setElements([...elements, newNode]);
     };
 
     const onNodeDragStop = (evt, node) => {
@@ -500,6 +501,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
 
     const onConnectStop = (evt) => {
         // Retrieves information and creates a desired relationship between nodes
+        debugger; //eslint-disable-line
         const params: IOATRelationshipElement = {
             source: currentNodeIdRef.current,
             sourceHandle: currentHandleIdRef.current,
@@ -521,7 +523,7 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
                 params.target = target.dataset.id;
                 params.id = `${currentNodeIdRef.current}${currentHandleIdRef.current}${target.dataset.id}`;
                 params.data.id = `${currentNodeIdRef.current}${currentHandleIdRef.current}${target.dataset.id}`;
-                setElements((els) => addEdge(params, els));
+                setEdges((els) => addEdge(params, els));
             }
         } else {
             const node = elements.find(
@@ -806,12 +808,12 @@ const OATGraphViewer = ({ state, dispatch }: OATGraphProps) => {
             >
                 <ElementsContext.Provider value={providerVal}>
                     <ReactFlow
-                        elements={elements}
-                        onElementClick={onElementClick}
-                        onElementsRemove={onElementsRemove}
+                        nodes={elements}
+                        edges={edges}
+                        onNodeClick={onElementClick}
                         onConnectStart={onConnectStart}
                         onConnectStop={onConnectStop}
-                        onLoad={onLoad}
+                        onInit={onInit}
                         snapToGrid={true}
                         snapGrid={[15, 15]}
                         nodeTypes={nodeTypes}
