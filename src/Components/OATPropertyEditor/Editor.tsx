@@ -49,6 +49,7 @@ const Editor = ({
     const [draggingProperty, setDraggingProperty] = useState(false);
     const enteredTemplateRef = useRef(null);
     const enteredPropertyRef = useRef(null);
+    const [propertyOnHover, setPropertyOnHover] = useState(false);
     const { model, templatesActive } = state;
 
     const propertiesKeyName = getModelPropertyCollectionName(
@@ -139,6 +140,8 @@ const Editor = ({
                             setCurrentNestedPropertyIndex
                         }
                         setModalBody={setModalBody}
+                        setPropertyOnHover={setPropertyOnHover}
+                        propertyOnHover={propertyOnHover}
                         propertyList={propertyList}
                     />
                 </PivotItem>

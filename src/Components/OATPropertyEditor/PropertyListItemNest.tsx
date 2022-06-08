@@ -7,6 +7,7 @@ import {
 } from './OATPropertyEditor.styles';
 import { DTDLSchemaType } from '../../Models/Classes/DTDL';
 import AddPropertyBar from './AddPropertyBar';
+import PropertySelector from './PropertySelector';
 import PropertyListItemNested from './PropertyListItemNested';
 import PropertyListEnumItemNested from './PropertyListEnumItemNested';
 import PropertyListMapItemNested from './PropertyListMapItemNested';
@@ -25,14 +26,8 @@ import {
 import { IOATEditorState } from '../../Pages/OATEditorPage/OATEditorPage.types';
 import {
     getModelPropertyCollectionName,
-    getModelPropertyListItemName,
-    shouldClosePropertySelectorOnMouseLeave
+    getModelPropertyListItemName
 } from './Utils';
-
-type IPropertySelectorTriggerElementsBoundingBox = {
-    top: number;
-    left: number;
-};
 
 type IPropertyListItemNest = {
     deleteItem?: (index: number) => any;
@@ -54,10 +49,8 @@ type IPropertyListItemNest = {
     setLastPropertyFocused?: React.Dispatch<React.SetStateAction<any>>;
     setModalBody?: React.Dispatch<React.SetStateAction<string>>;
     setModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    setPropertyOnHover?: React.Dispatch<React.SetStateAction<boolean>>;
     state?: IOATEditorState;
-    setPropertySelectorVisible?: React.Dispatch<React.SetStateAction<boolean>>;
-    handleSelectorPosition?: (event: MouseEvent) => void;
-    propertySelectorTriggerElementsBoundingBox: IPropertySelectorTriggerElementsBoundingBox;
 };
 
 export const PropertyListItemNest = ({
@@ -78,10 +71,8 @@ export const PropertyListItemNest = ({
     setCurrentNestedPropertyIndex,
     setModalOpen,
     setModalBody,
-    state,
-    setPropertySelectorVisible,
-    handleSelectorPosition,
-    propertySelectorTriggerElementsBoundingBox
+    setPropertyOnHover,
+    state
 }: IPropertyListItemNest) => {
     const { t } = useTranslation();
     const propertyInspectorStyles = getPropertyInspectorStyles();
@@ -90,6 +81,9 @@ export const PropertyListItemNest = ({
     const [subMenuActive, setSubMenuActive] = useState(false);
     const [collapsed, setCollapsed] = useState(true);
     const [hover, setHover] = useState(false);
+    const [propertySelectorVisible, setPropertySelectorVisible] = useState(
+        false
+    );
     const { model, templates } = state;
 
     const propertiesKeyName = getModelPropertyCollectionName(
@@ -169,17 +163,12 @@ export const PropertyListItemNest = ({
                     item: item,
                     index: index
                 });
+                setPropertyOnHover(true);
             }}
-            onMouseLeave={(e) => {
+            onMouseLeave={() => {
                 setHover(false);
-                if (
-                    shouldClosePropertySelectorOnMouseLeave(
-                        e,
-                        propertySelectorTriggerElementsBoundingBox
-                    )
-                ) {
-                    setPropertySelectorVisible(false);
-                }
+                setPropertySelectorVisible(false);
+                setPropertyOnHover(false);
             }}
         >
             <div
@@ -312,17 +301,31 @@ export const PropertyListItemNest = ({
                         index={index}
                     />
                 )}
+                {propertySelectorVisible && (
+                    <PropertySelector
+                        setPropertySelectorVisible={setPropertySelectorVisible}
+                        lastPropertyFocused={lastPropertyFocused}
+                        dispatch={dispatch}
+                        state={state}
+                        onTagClickCallback={() => {
+                            setHover(false);
+                            setPropertyOnHover(false);
+                        }}
+                        className={
+                            propertyInspectorStyles.propertySelectorNestItem
+                        }
+                    />
+                )}
             </div>
             {hover && item.schema['@type'] === DTDLSchemaType.Object && (
                 <AddPropertyBar
-                    onMouseOver={(e) => {
+                    onMouseOver={() => {
                         setLastPropertyFocused({
                             item: item,
                             index: index
                         });
                         setPropertySelectorVisible(true);
                         addPropertyCallback(null);
-                        handleSelectorPosition(e);
                     }}
                     classNameIcon={
                         propertyInspectorStyles.addPropertyBarIconNestItem

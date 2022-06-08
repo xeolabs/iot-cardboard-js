@@ -189,8 +189,7 @@ export const getPropertyInspectorStyles = () => {
             classNames.addPropertyMessageWrap,
             {
                 position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content'
+                width: 'fit-content'
             }
         ],
         propertySelector: [
@@ -203,10 +202,9 @@ export const getPropertyInspectorStyles = () => {
                 borderBottom: `1px solid ${theme.semanticColors.variantBorder}`,
                 zIndex: 100,
                 boxShadow: '0px 5px 10px 1px rgba(0,0,0,0.05)',
-                position: 'fixed',
+                position: 'absolute',
                 left: '-50%',
-                bottom: '42%',
-                height: 'fit-content'
+                bottom: '42%'
             }
         ],
         propertySelectorNestItem: [
@@ -264,8 +262,7 @@ export const getPropertyInspectorStyles = () => {
                 gridTemplateColumns: '20% 20% 20% 20% 20%',
                 justifyContent: 'center',
                 flexWrap: 'wrap',
-                padding: '0px 8px',
-                backgroundColor: theme.semanticColors.buttonBackgroundDisabled
+                padding: '0px 8px'
             } as IStyle
         ],
         propertyTagsWrapSecond: [
@@ -275,7 +272,8 @@ export const getPropertyInspectorStyles = () => {
                 gridTemplateColumns: '50% 50%',
                 justifyContent: 'center',
                 flexWrap: 'wrap',
-                padding: '0px 8px'
+                padding: '0px 8px',
+                backgroundColor: theme.semanticColors.buttonBackgroundDisabled
             } as IStyle
         ],
         propertyTagsWrapThird: [
@@ -410,7 +408,7 @@ export const getPropertyInspectorStyles = () => {
             {
                 overflowY: 'scroll',
                 maxHeight: 'calc(100vh - 310px)',
-                width: '104%',
+                width: '107%',
                 right: '-7%'
             } as IStyle
         ],
@@ -556,10 +554,6 @@ export const getPropertyInspectorStyles = () => {
                 top: '90%',
                 ':hover': {
                     backgroundColor: theme.semanticColors.menuIcon
-                },
-                '& button': {
-                    height: 'fit-content',
-                    position: 'absolute'
                 }
             } as IStyle
         ],
@@ -567,11 +561,7 @@ export const getPropertyInspectorStyles = () => {
             classNames.addPropertyBarPropertyListWrap,
             {
                 position: 'relative',
-                height: 'fit-content',
-                display: 'flex',
-                alignItems: 'center',
-                background: 'rgba(255, 255, 255, 0.2)',
-                marginTop: '20px'
+                paddingTop: '20px'
             } as IStyle
         ],
         addPropertyBarIcon: [
@@ -594,7 +584,7 @@ export const getPropertyInspectorStyles = () => {
             {
                 position: 'absolute',
                 top: '-7px',
-                left: '46px',
+                left: '20px',
                 zIndex: 1,
                 backgroundColor: theme.semanticColors.listBackground,
                 color: theme.semanticColors.primaryButtonTextDisabled,
