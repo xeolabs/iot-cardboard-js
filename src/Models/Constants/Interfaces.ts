@@ -5,19 +5,14 @@ import {
     ADTRelationshipData,
     ADTTwinData,
     KeyValuePairAdapterData,
-    SearchSpan,
-    TsiClientAdapterData
+    TsiClientAdapterData,
+    SearchSpan
 } from '../Classes';
 import {
     ADTAdapterModelsData,
     ADTAdapterPatchData,
     ADTAdapterTwinsData
 } from '../Classes/AdapterDataClasses/ADTAdapterData';
-import {
-    StandardModelData,
-    StandardModelIndexData,
-    StandardModelSearchData
-} from '../Classes/AdapterDataClasses/StandardModelData';
 import ADTTwinLookupData from '../Classes/AdapterDataClasses/ADTTwinLookupData';
 import AdapterResult from '../Classes/AdapterResult';
 import {
@@ -25,7 +20,6 @@ import {
     Locale,
     Theme,
     HierarchyNodeType,
-    modelActionType,
     FileUploadStatus,
     ADT3DAddInEventTypes,
     GlobeTheme,
@@ -533,44 +527,6 @@ export interface IBlobAdapter {
     ) => AdapterReturnType<StorageBlobsData>;
     putBlob: (file: File) => AdapterReturnType<StorageBlobsData>;
     resetSceneConfig(): AdapterReturnType<ADTScenesConfigData>;
-}
-
-export interface IBaseStandardModelSearchAdapter {
-    CdnUrl: string;
-    getModelSearchIndex(): AdapterReturnType<StandardModelIndexData>;
-    fetchModelJsonFromCDN(
-        dtmi: string,
-        actionType: modelActionType
-    ): AdapterReturnType<StandardModelData>;
-}
-
-export interface IModelSearchStringParams {
-    queryString: string;
-    pageIdx?: number;
-    modelIndex: Record<string, any>;
-}
-export interface IStandardModelSearchAdapter
-    extends IBaseStandardModelSearchAdapter {
-    githubRepo?: string;
-    searchString(
-        params: IModelSearchStringParams
-    ): AdapterReturnType<StandardModelSearchData>;
-}
-
-export interface IStandardModelSearchItem {
-    dtmi: string;
-    displayName?: string;
-    description?: string;
-}
-
-export interface IStandardModelSearchResult {
-    data: IStandardModelSearchItem[];
-    metadata?: { [key: string]: any };
-}
-
-export interface IStandardModelIndexData {
-    modelSearchStringIndex: string[];
-    modelSearchIndexObj: Record<string, any>;
 }
 
 export interface DTwinUpdateEvent {

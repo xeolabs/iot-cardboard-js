@@ -15,6 +15,4 @@ export { default as LineChartCard } from './LinechartCard/LinechartCard';
 export { default as LKVProcessGraphicCard } from './LKVProcessGraphicCard/LKVProcessGraphicCard';
 export { default as RelationshipsTable } from './RelationshipsTable/RelationshipsTable';
 export { default as DataPusherCard } from './DataPusherCard/DataPusherCard';
-export { default as ADTModelListCard } from './ADTModelListCard/ADTModelListCard';
 export { default as BIMUploadCard } from './BIMUploadCard/BIMUploadCard';
-export { default as ADTModelUploaderCard } from './ADTModelUploaderCard/ADTModelUploaderCard';

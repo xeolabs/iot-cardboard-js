@@ -99,23 +99,12 @@ export enum UploadPhase {
     Failed = 'failed'
 }
 
-export enum modelActionType {
-    select = 'select',
-    preview = 'preview'
-}
-
 export enum TwinLookupStatus {
     Idle,
     Ready,
     Started,
     ReadyToLocate,
     Finished
-}
-
-export enum FormMode {
-    New,
-    Edit,
-    Readonly
 }
 
 export enum PropertyInspectorPatchMode {
