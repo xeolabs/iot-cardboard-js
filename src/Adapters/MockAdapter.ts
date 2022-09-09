@@ -668,7 +668,7 @@ export default class MockAdapter
             return new AdapterResult({
                 result: new ADTAdapterTwinsData({
                     value: this.mockTwins.filter((t) =>
-                        t[params.searchProperty].includes(params.searchTerm)
+                        t.$dtId.includes(params.searchTerm)
                     )
                 }),
                 errorInfo: null

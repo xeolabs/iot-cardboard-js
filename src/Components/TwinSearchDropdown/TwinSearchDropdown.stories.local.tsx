@@ -1,16 +1,15 @@
 import React from 'react';
 import useAuthParams from '../../../.storybook/useAuthParams';
 import ADTAdapter from '../../Adapters/ADTAdapter';
-import { DTID_PROPERTY_NAME } from '../../Models/Constants/Constants';
 import MsalAuthService from '../../Models/Services/MsalAuthService';
-import TwinPropertySearchDropdown from './TwinPropertySearchDropdown';
+import TwinSearchDropdown from './TwinSearchDropdown';
 
 export default {
-    title: 'Components/TwinPropertySearchDropdown',
-    component: TwinPropertySearchDropdown
+    title: 'Components/TwinSearchDropdown',
+    component: TwinSearchDropdown
 };
 
-export const ADTTwinPropertySearchDropdown = () => {
+export const ADTTwinSearchDropdown = () => {
     const authenticationParameters = useAuthParams();
 
     const handleSelectTwinId = (twinId) => {
@@ -21,7 +20,7 @@ export const ADTTwinPropertySearchDropdown = () => {
         <div></div>
     ) : (
         <div style={{ width: '400px' }}>
-            <TwinPropertySearchDropdown
+            <TwinSearchDropdown
                 adapter={
                     new ADTAdapter(
                         authenticationParameters.adt.hostUrl,
@@ -31,8 +30,7 @@ export const ADTTwinPropertySearchDropdown = () => {
                     )
                 }
                 label="Twin ID"
-                onChange={handleSelectTwinId}
-                searchPropertyName={DTID_PROPERTY_NAME}
+                onTwinIdSelect={handleSelectTwinId}
             />
         </div>
     );

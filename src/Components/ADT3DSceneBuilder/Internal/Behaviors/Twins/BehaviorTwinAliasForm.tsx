@@ -23,16 +23,13 @@ import {
     IBehaviorTwinAliasItem
 } from '../../../../../Models/Classes/3DVConfig';
 import ViewerConfigUtility from '../../../../../Models/Classes/ViewerConfigUtility';
-import {
-    DTID_PROPERTY_NAME,
-    TwinAliasFormMode
-} from '../../../../../Models/Constants';
+import { TwinAliasFormMode } from '../../../../../Models/Constants';
 import { useBehaviorFormContext } from '../../../../../Models/Context/BehaviorFormContext/BehaviorFormContext';
 import { BehaviorFormContextActionType } from '../../../../../Models/Context/BehaviorFormContext/BehaviorFormContext.types';
 import { deepCopy } from '../../../../../Models/Services/Utils';
 import { ITwinToObjectMapping } from '../../../../../Models/Types/Generated/3DScenesConfiguration-v1.0.0';
 import TooltipCallout from '../../../../TooltipCallout/TooltipCallout';
-import TwinPropertySearchDropdown from '../../../../TwinPropertySearchDropdown/TwinPropertySearchDropdown';
+import TwinSearchDropdown from '../../../../TwinSearchDropdown/TwinSearchDropdown';
 import { SceneBuilderContext } from '../../../ADT3DSceneBuilder';
 import { getLeftPanelStyles } from '../../Shared/LeftPanel.styles';
 import PanelFooter from '../../Shared/PanelFooter';
@@ -269,19 +266,20 @@ const BehaviorTwinAliasForm: React.FC<{
                                 </Text>
                             ) : (
                                 selectedElements?.map((element, idx) => (
-                                    <TwinPropertySearchDropdown
+                                    <TwinSearchDropdown
                                         key={`aliased-twin-${idx}`}
+                                        styles={{ paddingBottom: 16 }}
                                         adapter={adapter}
                                         label={element.displayName}
                                         labelIconName="Shapes"
-                                        initialSelectedValue={
+                                        selectedTwinId={
                                             element.twinAliases?.[
                                                 formData.alias
                                             ]
                                         }
-                                        searchPropertyName={DTID_PROPERTY_NAME}
-                                        styles={{ root: { paddingBottom: 16 } }}
-                                        onChange={(selectedTwinId: string) => {
+                                        onTwinIdSelect={(
+                                            selectedTwinId: string
+                                        ) => {
                                             handleTwinSelect(
                                                 element.id,
                                                 selectedTwinId

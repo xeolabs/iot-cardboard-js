@@ -17,16 +17,7 @@ import { CaretCoordinates } from './CaretCoordinates';
 
 export interface IAutoCompleteProps {
     className?: string;
-    textFieldProps?: Omit<
-        ITextFieldProps,
-        | 'componentRef'
-        | 'disabled'
-        | 'id'
-        | 'onBlur'
-        | 'onKeyDown'
-        | 'required'
-        | 'validateOnFocusOut'
-    >;
+    textFieldProps?: ITextFieldProps;
     calloutProps?: ICalloutProps;
     defaultValue?: string;
     items?: string[];

@@ -1,11 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Select, {
-    components,
-    MenuProps,
-    OptionProps,
-    SelectOptionActionMeta
-} from 'react-select';
+import React, { useEffect, useState } from 'react';
 import {
     CombinatorText,
     CombinatorValue,
@@ -16,11 +9,7 @@ import {
     PropertyOption,
     PropertyOptionGroup
 } from './QueryBuilder.types';
-import {
-    getRowStyles,
-    MENU_LIST_COMPACT_MAX_WIDTH,
-    MENU_LIST_LARGE_MAX_WIDTH
-} from './QueryBuilder.styles';
+import { getRowStyles, reactSelectStyles } from './QueryBuilder.styles';
 import {
     classNamesFunction,
     useTheme,
@@ -41,12 +30,14 @@ import {
     getOperators
 } from './QueryBuilderUtils';
 import { useFlattenedModelProperties } from '../../../../Models/Hooks/useFlattenedModelProperties';
-import {
-    DTDLPropertyIconographyMap,
-    DTID_PROPERTY_NAME
-} from '../../../../Models/Constants/Constants';
-import { getReactSelectStyles } from '../../../../Resources/Styles/ReactSelect.styles';
-import TwinPropertySearchDropdown from '../../../TwinPropertySearchDropdown/TwinPropertySearchDropdown';
+import Select, {
+    components,
+    MenuProps,
+    OptionProps,
+    SelectOptionActionMeta
+} from 'react-select';
+import { useTranslation } from 'react-i18next';
+import { DTDLPropertyIconographyMap } from '../../../../Models/Constants';
 
 const getClassNames = classNamesFunction<
     IQueryBuilderRowStyleProps,
@@ -67,26 +58,12 @@ const QueryBuilderRow: React.FC<IQueryBuilderRowProps> = (props) => {
         onUpdateSnippet
     } = props;
     const propertySelectorId = useId('cb-advanced-search-property-select');
-    const theme = useTheme();
-
-    const selectDropdownElement = document.getElementById(propertySelectorId);
-    const dropdownWidth = (selectDropdownElement?.offsetWidth || 102) - 2; // account for borders
+    // Naming this as its type since theme is a prop as well
+    const iTheme = useTheme();
     const classNames = getClassNames(styles, {
-        dropdownWidth: dropdownWidth,
-        isOnlyFirstRow: isRemoveDisabled,
-        theme: theme
+        theme: iTheme,
+        isOnlyFirstRow: isRemoveDisabled
     });
-    const propertySelectorStyles = useMemo(
-        () =>
-            getReactSelectStyles(theme, {
-                menuList: {
-                    isOnlyFirstRow: isRemoveDisabled,
-                    listMaxWidthLarge: MENU_LIST_LARGE_MAX_WIDTH,
-                    listMaxWidthCompact: MENU_LIST_COMPACT_MAX_WIDTH
-                }
-            }),
-        [isRemoveDisabled, theme]
-    );
     const { t } = useTranslation();
 
     /** React select values */
@@ -220,6 +197,8 @@ const QueryBuilderRow: React.FC<IQueryBuilderRowProps> = (props) => {
         onChangeValue(rowId, option.text);
     };
 
+    const propertySelectorStyles = reactSelectStyles(iTheme, isRemoveDisabled);
+
     const Group = (props) => <components.Group {...props} />;
 
     const Placeholder = (props) => {
@@ -261,17 +240,9 @@ const QueryBuilderRow: React.FC<IQueryBuilderRowProps> = (props) => {
             );
         } else if (selectedProperty.data.type === 'string') {
             return (
-                <TwinPropertySearchDropdown
-                    adapter={adapter}
-                    inputStyles={propertySelectorStyles}
-                    isLabelHidden={true}
-                    onChange={(value: string) =>
-                        onChangeValueField(undefined, value)
-                    }
-                    noOptionsText={t('advancedSearch.noOptionsFoundMessage')}
-                    placeholderText={t('advancedSearch.valueFieldPlaceholder')}
-                    resetInputOnBlur={false}
-                    searchPropertyName={DTID_PROPERTY_NAME}
+                <TextField
+                    styles={classNames.subComponentStyles.valueField}
+                    onChange={onChangeValueField}
                 />
             );
         } else if (selectedProperty.data.type === 'boolean') {
@@ -334,19 +305,18 @@ const QueryBuilderRow: React.FC<IQueryBuilderRowProps> = (props) => {
                 {/* Property */}
                 <Select<PropertyOption>
                     className={'AdvancedSearch-propertySelectInput'}
+                    classNamePrefix={'AdvancedSearch-propertySelectInput'}
                     id={propertySelectorId}
-                    options={isLoading ? [] : propertyOptions}
+                    options={propertyOptions}
                     noOptionsMessage={() =>
                         t('advancedSearch.noPropertiesFound')
                     }
-                    isLoading={isLoading}
-                    loadingMessage={() => t('loading')}
                     isSearchable={true}
                     components={{
                         Group: Group,
                         Menu: Menu,
-                        Option: Option,
-                        Placeholder: Placeholder
+                        Placeholder: Placeholder,
+                        Option: Option
                     }}
                     onChange={onChangePropertySelected}
                     styles={propertySelectorStyles}

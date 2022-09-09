@@ -468,9 +468,7 @@ export default class ADTAdapter implements IADTAdapter {
                         params.shouldSearchByModel
                             ? `CONTAINS(T.$metadata.$model, '${params.searchTerm}') OR `
                             : ''
-                    }CONTAINS(T.${params.searchProperty}, '${
-                        params.searchTerm
-                    }')`,
+                    }CONTAINS(T.$dtId, '${params.searchTerm}')`,
                     continuationToken: params.continuationToken
                 }
             }
